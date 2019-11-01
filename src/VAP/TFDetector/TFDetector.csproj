@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenCvSharp4" Version="4.0.0.20190108" />
+    <PackageReference Include="OpenCvSharp4.runtime.ubuntu.18.04-x64" Version="4.0.1.20190326" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.0.0.20190108" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DNNDetector\DNNDetector.csproj" />
+    <ProjectReference Include="..\TFWrapper\TFWrapper.csproj" />
+  </ItemGroup>
+
+</Project>

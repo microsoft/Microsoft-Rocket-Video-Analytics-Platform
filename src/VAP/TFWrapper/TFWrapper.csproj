@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Options" Version="5.3.0.1" />
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <Reference Include="TensorFlowSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\TensorFlowSharp.1.12.0\lib\TensorFlowSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="test_images\input.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <IsOSX Condition="Exists('/Library/Frameworks') and Exists ('/etc')">true</IsOSX>
+    <IsLinux Condition="Exists ('/proc') and Exists ('/etc/')">true</IsLinux>
+
+    <!-- if ShouldIncludeNativeTensorFlow == False then don't include the native libraries -->
+    <ShouldIncludeNativeTensorFlow Condition=" '$(ShouldIncludeNativeTensorFlow)' == '' ">True</ShouldIncludeNativeTensorFlow>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(ShouldIncludeNativeTensorFlow)' != 'False' ">
+    <None Include="$(MSBuildThisFileDirectory)\packages\TensorFlowSharp.1.12.0\runtimes\linux\native\**\*" Condition="'$(IsLinux)' == 'true'">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)\packages\TensorFlowSharp.1.12.0\runtimes\osx\native\**\*" Condition="'$(IsOSX)' == 'true'">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)\packages\TensorFlowSharp.1.12.0\runtimes\win7-x64\native\**\*" Condition="'$(OS)' != 'Unix'">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.csproj" />
+  </ItemGroup>
+
+</Project>
