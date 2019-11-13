@@ -63,7 +63,7 @@ namespace LineDetector
             {
                 if (frameIndex > 1)
                 {
-                    if (occupancyChanged(lane))
+                    if (occupancy[lane])
                     {
                         string blobName_BGS = $@"frame-{frameIndex}-BGS-{lane}-{occupancy[lane]}.jpg";
                         string fileName_BGS = @OutputFolder.OutputFolderBGSLine + blobName_BGS;

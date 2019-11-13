@@ -18,7 +18,6 @@
     <ProjectReference Include="..\BGSObjectDetector\BGSObjectDetector.csproj" />
     <ProjectReference Include="..\DarknetDetector\DarknetDetector.csproj" />
     <ProjectReference Include="..\Decoder\Decoder.csproj" />
-    <ProjectReference Include="..\DarknetDetector\DarknetDetector.csproj" />
     <ProjectReference Include="..\DNNDetector\DNNDetector.csproj" />
     <ProjectReference Include="..\FramePreProcessor\FramePreProcessor.csproj" />
     <ProjectReference Include="..\LineDetector\LineDetector.csproj" />
