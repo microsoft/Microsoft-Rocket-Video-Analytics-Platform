@@ -67,7 +67,7 @@ namespace TFDetector
                                     ltDNNItem.Add(item);
 
                                     // output cheap TF results
-                                    string blobName_Cheap = $@"frame-{frameIndex}-Cheap-{item.Confidence}.jpg";
+                                    string blobName_Cheap = $@"frame-{frameIndex}-Cheap-{frameIndexTF}-{item.Confidence}.jpg";
                                     string fileName_Cheap = @OutputFolder.OutputFolderLtDNN + blobName_Cheap;
                                     File.WriteAllBytes(fileName_Cheap, item.TaggedImageData);
                                     File.WriteAllBytes(@OutputFolder.OutputFolderAll + blobName_Cheap, item.TaggedImageData);

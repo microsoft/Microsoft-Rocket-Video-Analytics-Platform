@@ -16,7 +16,6 @@
     <ProjectReference Include="..\AML.Client\AML.Client.csproj" />
     <ProjectReference Include="..\AML.tfserving\AML.tfserving.csproj" />
     <ProjectReference Include="..\BGSObjectDetector\BGSObjectDetector.csproj" />
-    <ProjectReference Include="..\DarknetDetector\DarknetDetector.csproj" />
     <ProjectReference Include="..\Decoder\Decoder.csproj" />
     <ProjectReference Include="..\DNNDetector\DNNDetector.csproj" />
     <ProjectReference Include="..\FramePreProcessor\FramePreProcessor.csproj" />

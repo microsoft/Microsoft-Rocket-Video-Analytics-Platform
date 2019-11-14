@@ -3,7 +3,6 @@
 
 ﻿using AML.Client;
 using BGSObjectDetector;
-using DarknetDetector;
 using DNNDetector.Model;
 using LineDetector;
 using OpenCvSharp;
@@ -38,9 +37,9 @@ namespace VideoPipelineCore
             else
             {
                 isVideoStream = false;
-                videoUrl = @"..\..\..\..\..\..\media\" + args[0];
+                videoUrl = @"./media/" + args[0];
             }
-            string lineFile = @"..\..\..\..\..\..\cfg\" + args[1];
+            string lineFile = @"./cfg/" + args[1];
             int SAMPLING_FACTOR = int.Parse(args[2]);
             double RESOLUTION_FACTOR = double.Parse(args[3]);
 
@@ -53,7 +52,7 @@ namespace VideoPipelineCore
             //initialize pipeline settings
             int pplConfig = Convert.ToInt16(ConfigurationManager.AppSettings["PplConfig"]);
             bool loop = false;
-            bool displayRawVideo = true;
+            bool displayRawVideo = false;
             bool displayBGSVideo = false;
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderAll);
 
@@ -70,15 +69,6 @@ namespace VideoPipelineCore
             Dictionary<string, bool> occupancy = null;
             List<Tuple<string, int[]>> lines = lineDetector.multiLaneDetector.getAllLines();
 
-            //-----LineTriggeredDNN (Darknet)-----
-            LineTriggeredDNNDarknet ltDNNDarknet = null;
-            List<Item> ltDNNItemListDarknet = null;
-            if (new int[] { 3, 4 }.Contains(pplConfig))
-            {
-                ltDNNDarknet = new LineTriggeredDNNDarknet(lines);
-                ltDNNItemListDarknet = new List<Item>();
-            }
-
             //-----LineTriggeredDNN (TensorFlow)-----
             LineTriggeredDNNTF ltDNNTF = null;
             List<Item> ltDNNItemListTF = null;
@@ -86,25 +76,6 @@ namespace VideoPipelineCore
             {
                 ltDNNTF = new LineTriggeredDNNTF(lines);
                 ltDNNItemListTF = new List<Item>();
-            }
-
-            //-----CascadedDNN (Darknet)-----
-            CascadedDNNDarknet ccDNNDarknet = null;
-            List<Item> ccDNNItemList = null;
-            if (new int[] { 3 }.Contains(pplConfig))
-            {
-                ccDNNDarknet = new CascadedDNNDarknet(lines);
-                ccDNNItemList = new List<Item>();
-            }
-
-            //-----DNN on every frame (Darknet)-----
-            FrameDNNDarknet frameDNNDarknet = null;
-            List<Item> frameDNNDarknetItemList = null;
-            if (new int[] { 1 }.Contains(pplConfig))
-            {
-                frameDNNDarknet = new FrameDNNDarknet("YoloV3TinyCoco", Wrapper.Yolo.DNNMode.Frame, lines);
-                frameDNNDarknetItemList = new List<Item>();
-                Utils.Utils.cleanFolder(@OutputFolder.OutputFolderFrameDNNDarknet);
             }
 
             //-----DNN on every frame (TensorFlow)-----
@@ -167,38 +138,17 @@ namespace VideoPipelineCore
                 
 
                 //line detector
-                if (new int[] { 0, 3, 4, 5 }.Contains(pplConfig))
+                if (new int[] { 0, 4, 5 }.Contains(pplConfig))
                 {
                     occupancy = lineDetector.updateLineOccupancy(frame, frameIndex, fgmask, foregroundBoxes);
                 }
 
 
                 //cheap DNN
-                if (new int[] { 3, 4 }.Contains(pplConfig))
-                {
-                    ltDNNItemListDarknet = ltDNNDarknet.Run(frame, frameIndex, occupancy, lines, category);
-                    ItemList = ltDNNItemListDarknet;
-                }
-                else if (new int[] { 5 }.Contains(pplConfig))
+                if (new int[] { 4, 5 }.Contains(pplConfig))
                 {
                     ltDNNItemListTF = ltDNNTF.Run(frame, frameIndex, occupancy, lines, category);
                     ItemList = ltDNNItemListTF;
-                }
-
-
-                //heavy DNN
-                if (new int[] { 3 }.Contains(pplConfig))
-                {
-                    ccDNNItemList = ccDNNDarknet.Run(frame, frameIndex, ltDNNItemListDarknet, lines, category);
-                    ItemList = ccDNNItemList;
-                }
-
-
-                //frameDNN with Darknet Yolo
-                if (new int[] { 1 }.Contains(pplConfig))
-                {
-                    frameDNNDarknetItemList = frameDNNDarknet.Run(Utils.Utils.ImageToByteBmp(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(frame)), frameIndex, lines, category, System.Drawing.Brushes.Pink);
-                    ItemList = frameDNNDarknetItemList;
                 }
 
 

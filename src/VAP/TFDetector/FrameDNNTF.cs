@@ -29,6 +29,7 @@ namespace TFDetector
         public FrameDNNTF(List<Tuple<string, int[]>> lines)
         {
             _lines = lines;
+            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderFrameDNNTF);
         }
 
         public List<Item> Run(Mat frameTF, int frameIndex, Dictionary<string, int> category, Brush bboxColor, double min_score_for_linebbox_overlap)
@@ -67,15 +68,8 @@ namespace TFDetector
             foreach (Item it in validObjects)
             {
                 string blobName_TF = $@"frame-{frameIndex}-TF-{it.Confidence}.jpg";
-                string fileName_TF = @OutputFolder.OutputFolderFrameDNNTF + blobName_TF;
-                File.WriteAllBytes(fileName_TF, it.TaggedImageData);
-                File.WriteAllBytes(@OutputFolder.OutputFolderAll + blobName_TF, it.TaggedImageData);
-
-                using (Image image = Image.FromStream(new MemoryStream(it.TaggedImageData)))
-                {
-                    image.Save(@OutputFolder.OutputFolderFrameDNNTF + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
-                    image.Save(@OutputFolder.OutputFolderAll + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
-                }
+                File.WriteAllBytes(@OutputFolder.OutputFolderFrameDNNTF + blobName_TF, it.CroppedImageData);
+                File.WriteAllBytes(@OutputFolder.OutputFolderAll + blobName_TF, it.CroppedImageData);
             }
 
             return (validObjects.Count == 0 ? null : validObjects);

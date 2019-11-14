@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DarknetDetector\DarknetDetector.csproj" />
+    <ProjectReference Include="..\DNNDetector\DNNDetector.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>

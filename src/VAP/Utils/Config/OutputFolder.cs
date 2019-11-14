@@ -5,18 +5,20 @@
 {
     public static class OutputFolder
     {
-        public static string OutputFolderAll { get; set; } = "../../output_all/";
+        public static string OutputFolderRoot { get; set; } = "output/";
 
-        public static string OutputFolderBGSLine { get; set; } = "../../output_bgsline/";
+        public static string OutputFolderAll { get; set; } = OutputFolderRoot + "output_all/";
 
-        public static string OutputFolderLtDNN { get; set; } = "../../output_ltdnn/";
+        public static string OutputFolderBGSLine { get; set; } = OutputFolderRoot + "output_bgsline/";
 
-        public static string OutputFolderCcDNN { get; set; } = "../../output_ccdnn/";
+        public static string OutputFolderLtDNN { get; set; } = OutputFolderRoot + "output_ltdnn/";
 
-        public static string OutputFolderAML { get; set; } = "../../output_aml/";
+        public static string OutputFolderCcDNN { get; set; } = OutputFolderRoot + "output_ccdnn/";
 
-        public static string OutputFolderFrameDNNDarknet { get; set; } = "../../output_framednndarknet/";
+        public static string OutputFolderAML { get; set; } = OutputFolderRoot + "output_aml/";
 
-        public static string OutputFolderFrameDNNTF { get; set; } = "../../output_framednntf/";
+        public static string OutputFolderFrameDNNDarknet { get; set; } = OutputFolderRoot + "output_framednndarknet/";
+
+        public static string OutputFolderFrameDNNTF { get; set; } = OutputFolderRoot + "output_framednntf/";
     }
 }
