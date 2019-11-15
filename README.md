@@ -33,14 +33,15 @@ To enable GPU support, install [CUDA Toolkit](https://developer.nvidia.com/cuda-
 
 Check out the [repository](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform/).
 
-#### Build on Windows
+#### Prepare video feeds and line configuration
 * Prepare video feeds. Rocket can be fed with either live video streams (e.g., `rtsp://<url>:<port>/`) or local video files (should be put into `\media\`). A sample video file `sample.mp4` is already included in `\media\`. 
 * Prepare a configuration file (should be placed into `\cfg\`) used in line-based alerting and cascaded DNN calls. Each line in the file defines a line-of-interest with the format below.  
 	`<line_name> <line_id> <x_1> <y_1> <x_2> <y_2> <overlap_threshold>`  
 A line configuration file `sample.txt` manually created based on `sample.mp4` is also included in the folder `\cfg\`.
 	<img src="https://y0q1qa.dm.files.1drv.com/y4mkb3rylNVwm6m-V5ZbyLr6B0kgnqlLr29Y7qGYP6RirrOntpoCKSKEwgSj5yeRLCP4WgqDUd9O7B77wqmP18h_nEHaH4_J1djnGQ0gIN1XDbArx2Unuo6sZVndCBJl1R_Iq8DIrDJoTo-trJz5CZ3LAMqlJ_UYrxb0PslDnhLj9hJf2sB0dTOuGCXKr_VEZSlp3jf55VEYSbTYYee-O5nXg?width=721&height=406&cropmode=none" alt="sampleline" width="700">
 
-* Run `Config.bat` before the first time you run Rocket to download pre-compiled OpenCV and TensorFlow binaries as well as Darknet YOLO weights files. It may take few minutes depending on your network status. Proceed only when all downloads finish. 
+#### Build on Windows
+* Run `Config.bat` before the first time you run Rocket to download pre-compiled OpenCV and TensorFlow binaries as well as Darknet YOLO weights files. It may take few minutes depending on your network status. Proceed only when all downloads finish. YOLOv3 and Tiny YOLOv3 are already included in Rocket. You can plug-in other [YOLO models](https://pjreddie.com/darknet/yolo/) as you wish.
 * Launch `VAP.sln` in `src\VAP\` from Visual Studio.
 * Set pipeline config `PplConfig` in VideoPipelineCore - App.config. We have pre-compiled six configurations in the code. Pipeline descriptions are also included in :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
 	* 0: Line-based alerting
@@ -66,8 +67,37 @@ A line configuration file `sample.txt` manually created based on `sample.mp4` is
 	* Using Visual Studio: set VideoPipelineCore - Property - Debug - Application Arguments `<video_file/camera_url> <line_detection_config_file> <sampling_factor> <resolution_factor> <object_category>`. To run Rocket on the sample video, for example, arguments can be set to `sample.mp4 sample.txt 1 1 car`.
 	* Using Command Line (CMD or PowerShell): run `dotnet .\VideoPipelineCore.dll <video_file/camera_url> <line_detection_config_file> <sampling_factor> <resolution_factor> <object_category>` in `\src\VAP\VideoPipelineCore\bin\Debug\netcoreapp2.2`. For instance, `dotnet .\VideoPipelineCore.dll sample.mp4 sample.txt 1 1 car`.
 
+#### Build on Linux
+[Docker](https://www.docker.com/) is recommended to run Rocket on Linux. Below we use Ubuntu 16.04 as an example to walk through the steps of building Rocket docker image and run it with GPU acceleration. 
+
+* **Prerequisites**
+	* Install .NET Core 2.2 SDK ([2.2.301](https://dotnet.microsoft.com/download/linux-package-manager/ubuntu16-04/sdk-2.2.301) is preferred).
+	* Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/) (version 18.09.7 is preferred).
+	* Install NVIDIA driver based on your GPU model (e.g., 418.67 for Tesla GPU). 
+	* Install [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker). The NVIDIA Container Toolkit allows users to build and run GPU accelerated Docker containers. 
+
+* **Build docker image on Linux**
+	* Pull base docker image with CUDA toolkit and OpenCV. This image is needed to build Rocket docker image. 
+		* [Login]((https://docs.docker.com/engine/reference/commandline/login/)) to Docker Hub. [Docker Hub](https://hub.docker.com/) is a public library and community for container images.
+		* Run `docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn`.
+	* Git clone [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) for source code to dockerize Rocket on Linux.
+	* [Create line configuration file(s)](#prepare-video-feeds-and-line-configuration) inside `\cfg`. If you are running Rocket on a pre-recorded video, please also copy the video file into `\media`.
+	* (Optional) Update `\src\VAP\VideoPipelineCore\App.Config` to set proper parameters for database and Azure Machine Learning service connection.
+	* Run `sudo chmod 744 Config.sh` and `sudo ./Config.sh` before the first time you build Rocket image to download pre-compiled TensorFlow binaries. 
+	* Run `docker build` to [build](https://docs.docker.com/engine/reference/commandline/build/) Rocket image using `Dockerfile.VAP`.  
+	`docker build -t <repository>/<image>:<version> -f Dockerfile.VAP .`
+	* (Optional) Push Rocket image to your repository if you need to run it somewhere else.  
+	`docker push -t <repository>/<image>:<version>`
+
+* **Run Rocket image on Linux**
+	* Pull Rocket docker image you built if it is not on the local machine. You can use `docker images` to check existing images.  
+`docker pull -t <repository>/<image>:<version>`  
+	We have also pre-built a Rocket docker image from [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) with only local processing (BGS early filtering + TensorFlow Fast RCNN). To pull this image, run  
+`docker pull ycshu086/rocket-sample-edgeonly:0.1`
+	* Mount volume into the container and run Rocket image with NVIDIA GPU.  
+`docker run --runtime=nvidia -v <local directory>:/app/output <repository>/<image>:<version> sample.mp4 sample.txt 1 1 car`
 
 ### Step 3: Results
-Output images are generated in folders in `\src\VAP\VideoPipelineCore\bin\`. Results from different modules are sent to different directories (e.g., `output_bgsline` for background subtraction-based detector) whereas `output_all` has images from all modules. Name of each file consists of frame ID, module name, and confidence score. Below are few sample results from running pipeline 3 and pipeline 5 on `sample.mp4`. You should also see results printed in console during running.
+Output images are generated in folders in `\src\VAP\VideoPipelineCore\bin\` (Windows), or the local directory you mount during `docker run` on Linux. Results from different modules are sent to different directories (e.g., `output_bgsline` for background subtraction-based detector) whereas `output_all` has images from all modules. Name of each file consists of frame ID, module name, and confidence score. Below are few sample results from running pipeline 3 and pipeline 5 on `sample.mp4`. You should also see results printed in console during running.
 <img src="https://xaiwzw.dm.files.1drv.com/y4mEvHlKolV_qDdm08IWsk9r3vyecfb1cyu1wYgZ1s5YUQ8Fi9o-_zMzUpxTI_7SlGaRyngn3ScbGSPUXjEcHqeqLN129dVBW2Yja8MdpZW5Tv497MQwPzxhqBZrKkniFxj9-_KkrYL3PUXDkyubagosUHoQpu6pv41ZoMps7lEnsE8ToQtod7TcOTaklkq5sQ0srSy3907Zcwql_I7CdQ_mg?width=1280&height=720&cropmode=none" alt="output" width="1280">
 The above illustration on pipeline 3 shows that at frame 2679, background subtraction detected an object, tiny Yolo DNN confirmed it was a car with a confidence of 0.24, and heavy Yolo v3 confirmed it with a confidence of 0.92. Likewise, for pipeline 5 where the TensorFlow FastRNN model had a confidence of 0.55 and AzureML (in the cloud) came back with a confidence of 0.76 for the same object.
