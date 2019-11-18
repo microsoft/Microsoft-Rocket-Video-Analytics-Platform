@@ -6,28 +6,37 @@ A highly extensible software stack to empower everyone to build practical real-w
 
 ### Step 1: Set up environment
 
-[Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/) (VS 2017 is preferred) is recommended IDE for Rocket on Windows 10. While installing Visual Studio, please also add C++ 2015.3 v14.00 (v140) toolset to your local machine. Snapshot below shows how to include C++ 2015.3 v14.00 from Visual Studio Installer. 
+#### Setup on Windows
 
-<img src="https://mntmwg.dm.files.1drv.com/y4mqIJhU_BMCDfndscmI1apnWjXOAd0FAGvjAuyVVt5tJyGgahURnXi4L8SMO9Wxw00IvLRp0cN4PEhhM1OevN28O8ejxoU5KY7syzsn6BWEPARNyabivS28P_PG1CznLltnPKfmt9pv4qMgVo-MV38XL2Snl8g6lPMaqIa6YWbgmxFfSAzeqbULngzrabIRyTy3lSDLrd39PEFnTwK-avkrQ?width=1608&height=1033&cropmode=none" alt="C++v140" width="1000">
+* [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/) (VS 2017 is preferred) is recommended IDE for Rocket on Windows 10. While installing Visual Studio, please also add C++ 2015.3 v14.00 (v140) toolset to your local machine. Snapshot below shows how to include C++ 2015.3 v14.00 from Visual Studio Installer.  
+	<img src="https://mntmwg.dm.files.1drv.com/y4mqIJhU_BMCDfndscmI1apnWjXOAd0FAGvjAuyVVt5tJyGgahURnXi4L8SMO9Wxw00IvLRp0cN4PEhhM1OevN28O8ejxoU5KY7syzsn6BWEPARNyabivS28P_PG1CznLltnPKfmt9pv4qMgVo-MV38XL2Snl8g6lPMaqIa6YWbgmxFfSAzeqbULngzrabIRyTy3lSDLrd39PEFnTwK-avkrQ?width=1608&height=1033&cropmode=none" alt="C++v140" width="1000">
 
-Follow [instructions](https://dotnet.microsoft.com/download) to install .NET Core 2.2 (2.2.102 is preferred).
+* Follow [instructions](https://dotnet.microsoft.com/download) to install .NET Core 2.2 (2.2.102 is preferred).
 
-To enable GPU support, install [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) and [cuDNN](https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#download).
-* **CUDA 8.0** (e.g., cuda_8.0.61_win10_network.exe) is needed for Darknet (e.g., YOLO) models.
+* To enable GPU support, install [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) and [cuDNN](https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#download). Please also make sure your [NVIDIA driver](https://www.nvidia.com/Download/index.aspx?lang=en-us) is up-to-date. 
+	* **CUDA 8.0** (e.g., cuda_8.0.61_win10_network.exe) is needed for Darknet (e.g., YOLO) models.
 
-	After installation, please make sure files in `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\extras\visual_studio_integration\MSBuildExtensions` are copied to `C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\BuildCustomizations`
+		After installation, please make sure files in `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\extras\visual_studio_integration\MSBuildExtensions` are copied to `C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\BuildCustomizations`
 
-* **CUDA 9.1** (e.g., cuda_9.1.85_win10_network.exe) is needed to support TensorFlow models.
+	* **CUDA 9.1** (e.g., cuda_9.1.85_win10_network.exe) is needed to support TensorFlow models.
 
-* **cuDNN 8.0** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip).
+	* **cuDNN 8.0** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip).
 	
-	Copy `<installpath>\cuda\bin\cudnn64_7.dll` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin`.  
-	Copy `<installpath>\cuda\ include\cudnn.h` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include`.  
-	Copy `<installpath>\cuda\lib\x64\cudnn.lib` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\x64`.  
-	Add Variable Name: `CUDA_PATH` with Variable Value: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0` into Environment Variables.  
-	<img src="https://mntnwg.dm.files.1drv.com/y4mqF18Exoc2MwmT_HccCRrH9_DkoCAa19frsS7tyQqnNGqfjFuowZTfAZsCysgmzMPsdfw4pN6SkYkLKRCcQfhDzD_uNYA3PlyqtPe9b9EXuXZhNfH3yZudjeJq9tVi5Gm_VVLeE2Y0j4AKW01ANs6e0qSHR027D2hKtrwCODB4yQp-f_SH3DAzi0HeoUZunwnExihbfQwZq1mNii-CZStmw?width=1950&height=1303&cropmode=none" alt="PathVariable" width="600">
+		Copy `<installpath>\cuda\bin\cudnn64_7.dll` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin`.  
+		Copy `<installpath>\cuda\ include\cudnn.h` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include`.  
+		Copy `<installpath>\cuda\lib\x64\cudnn.lib` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\x64`.  
+		Add Variable Name: `CUDA_PATH` with Variable Value: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0` into Environment Variables.  
+		<img src="https://mntnwg.dm.files.1drv.com/y4mqF18Exoc2MwmT_HccCRrH9_DkoCAa19frsS7tyQqnNGqfjFuowZTfAZsCysgmzMPsdfw4pN6SkYkLKRCcQfhDzD_uNYA3PlyqtPe9b9EXuXZhNfH3yZudjeJq9tVi5Gm_VVLeE2Y0j4AKW01ANs6e0qSHR027D2hKtrwCODB4yQp-f_SH3DAzi0HeoUZunwnExihbfQwZq1mNii-CZStmw?width=1950&height=1303&cropmode=none" alt="PathVariable" width="600">
 
-* **Restart your computer** after installing CUDA and cuDNN.
+	* **Restart your computer** after installing CUDA and cuDNN.
+
+#### Setup on Linux
+[Docker](https://www.docker.com/) is recommended to run Rocket on Linux. Below we use Ubuntu 16.04 as an example to walk through the steps of building Rocket docker image and run it with GPU acceleration. 
+
+* Install .NET Core 2.2 SDK ([2.2.301](https://dotnet.microsoft.com/download/linux-package-manager/ubuntu16-04/sdk-2.2.301) is preferred).
+* Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/) (version 18.09.7 is preferred).
+* Install [NVIDIA driver](https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver) based on your GPU model (e.g., 418.67 for Tesla GPU). 
+* Install [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker). The NVIDIA Container Toolkit allows users to build and run GPU accelerated Docker containers. Note that you do NOT need to install the CUDA toolkit on the host, but GPU driver needs to be installed. 
 
 ### Step 2: Run the pipeline
 
@@ -45,11 +54,11 @@ A line configuration file `sample.txt` manually created based on `sample.mp4` is
 * Launch `VAP.sln` in `src\VAP\` from Visual Studio.
 * Set pipeline config `PplConfig` in VideoPipelineCore - App.config. We have pre-compiled six configurations in the code. Pipeline descriptions are also included in :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
 	* 0: Line-based alerting
-    * 1: Darknet Yolo v3 on every frame (slide #7)
-    * 2: TensorFlow FastRCNN on every frame (slide #8)
-    * 3: Background subtraction-based (BGS) early filtering -> Darknet Tiny Yolo -> Darknet Yolo v3 (slide #9)
-    * 4: BGS early filtering -> Darknet Tiny Yolo -> Database (ArangoDB and blob storage on Azure) (slide #10)
-    * 5: BGS early filtering -> TensorFlow Fast R-CNN -> Azure Machine Learning (cloud) (slide #11)
+    * 1: Darknet Yolo v3 on every frame ([slide #7](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=7))
+    * 2: TensorFlow FastRCNN on every frame ([slide #8](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=8))
+    * 3: Background subtraction-based (BGS) early filtering -> Darknet Tiny Yolo -> Darknet Yolo v3 ([slide #9](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=9))
+    * 4: BGS early filtering -> Darknet Tiny Yolo -> Database (ArangoDB and blob storage on Azure) ([slide #10](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=10))
+    * 5: BGS early filtering -> TensorFlow Fast R-CNN -> Azure Machine Learning (cloud) ([slide #11](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=11))
 
 * (Optional) Set up your own database and Azure Machine Learning service if `PplConfig` is set to 4 or 5.
 	* **Azure Database**:
@@ -68,32 +77,30 @@ A line configuration file `sample.txt` manually created based on `sample.mp4` is
 	* Using Command Line (CMD or PowerShell): run `dotnet .\VideoPipelineCore.dll <video_file/camera_url> <line_detection_config_file> <sampling_factor> <resolution_factor> <object_category>` in `\src\VAP\VideoPipelineCore\bin\Debug\netcoreapp2.2`. For instance, `dotnet .\VideoPipelineCore.dll sample.mp4 sample.txt 1 1 car`.
 
 #### Build on Linux
-[Docker](https://www.docker.com/) is recommended to run Rocket on Linux. Below we use Ubuntu 16.04 as an example to walk through the steps of building Rocket docker image and run it with GPU acceleration. 
+We have pre-built a Rocket docker image from [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) with local processing only ([slide #12](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=12) without cloud parts). The image is hosted on [Docker Hub](https://hub.docker.com/), a public library and community for container images, and you will be asked to login before pull/push images (sign up first if you don't have an account).
 
-* **Prerequisites**
-	* Install .NET Core 2.2 SDK ([2.2.301](https://dotnet.microsoft.com/download/linux-package-manager/ubuntu16-04/sdk-2.2.301) is preferred).
-	* Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/) (version 18.09.7 is preferred).
-	* Install NVIDIA driver based on your GPU model (e.g., 418.67 for Tesla GPU). 
-	* Install [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker). The NVIDIA Container Toolkit allows users to build and run GPU accelerated Docker containers. 
+To test on the pre-built Rocket image, run  
+`docker pull ycshu086/rocket-sample-edgeonly:0.1`
 
-* **Build docker image on Linux**
+Once pulled, run the command below to start Rocket with NVIDIA GPU.  
+`docker run --runtime=nvidia -v <local directory>:/app/output ycshu086/rocket-sample-edgeonly:0.1 sample.mp4 sample.txt 1 1 car`
+
+* **Build your own Rocket pipeline on Linux**
 	* Pull base docker image with CUDA toolkit and OpenCV. This image is needed to build Rocket docker image. 
-		* [Login]((https://docs.docker.com/engine/reference/commandline/login/)) to Docker Hub. [Docker Hub](https://hub.docker.com/) is a public library and community for container images.
-		* Run `docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn`.
+		`docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn`.
 	* Git clone [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) for source code to dockerize Rocket on Linux.
-	* [Create line configuration file(s)](#prepare-video-feeds-and-line-configuration) inside `\cfg`. If you are running Rocket on a pre-recorded video, please also copy the video file into `\media`.
+	* [Create line configuration file(s)](#prepare-video-feeds-and-line-configuration) inside `\cfg`. If you are running Rocket on a pre-recorded video, please also [copy the video file](#prepare-video-feeds-and-line-configuration) into `\media`.
 	* (Optional) Update `\src\VAP\VideoPipelineCore\App.Config` to set proper parameters for database and Azure Machine Learning service connection.
 	* Run `sudo chmod 744 Config.sh` and `sudo ./Config.sh` before the first time you build Rocket image to download pre-compiled TensorFlow binaries. 
 	* Run `docker build` to [build](https://docs.docker.com/engine/reference/commandline/build/) Rocket image using `Dockerfile.VAP`.  
 	`docker build -t <repository>/<image>:<version> -f Dockerfile.VAP .`
-	* (Optional) Push Rocket image to your repository if you need to run it somewhere else.  
+	* (Optional) Push Rocket image to a cloud repository (e.g., docker hub, Azure Container Registry etc.) if you need to run it somewhere else.  
 	`docker push -t <repository>/<image>:<version>`
 
 * **Run Rocket image on Linux**
-	* Pull Rocket docker image you built if it is not on the local machine. You can use `docker images` to check existing images.  
+	* Pull a pre-built Rocket docker image to the local machine. You can use `docker images` to check existing images.  
 `docker pull -t <repository>/<image>:<version>`  
-	We have also pre-built a Rocket docker image from [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) with only local processing (BGS early filtering + TensorFlow Fast RCNN). To pull this image, run  
-`docker pull ycshu086/rocket-sample-edgeonly:0.1`
+
 	* Mount volume into the container and run Rocket image with NVIDIA GPU.  
 `docker run --runtime=nvidia -v <local directory>:/app/output <repository>/<image>:<version> sample.mp4 sample.txt 1 1 car`
 
