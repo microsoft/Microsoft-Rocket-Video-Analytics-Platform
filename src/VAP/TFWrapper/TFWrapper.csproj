@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,10 +12,6 @@
     <Reference Include="TensorFlowSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\TensorFlowSharp.1.12.0\lib\TensorFlowSharp.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 
   <ItemGroup>
