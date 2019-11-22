@@ -22,7 +22,7 @@ namespace VideoPipelineCore
         static void Main(string[] args)
         {
             //parse arguments
-            if (args.Length < 5)
+            if (args.Length < 4)
             {
                 Console.WriteLine(args.Length);
                 Console.WriteLine("Usage: <exe> <video url> <cfg file> <samplingFactor> <resolutionFactor> <category1> <category2> ...");

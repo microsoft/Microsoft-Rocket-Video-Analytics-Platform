@@ -99,7 +99,7 @@ namespace TFDetector
 
                     int value = Convert.ToInt32(classes[i, j]);
                     CatalogItem catalogItem = TFWrapper._catalog.FirstOrDefault(item => item.Id == value);
-                    if (!_category.Contains(catalogItem.DisplayName)) continue;
+                    if (_category.Count > 0 && !_category.Contains(catalogItem.DisplayName)) continue;
 
                     for (int k = 0; k < z; k++)
                     {
