@@ -37,7 +37,7 @@ namespace DarknetDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderCcDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, List<Item> ltDNNItemList, List<Tuple<string, int[]>> lines, Dictionary<string, int> category)
+        public List<Item> Run(Mat frame, int frameIndex, List<Item> ltDNNItemList, List<Tuple<string, int[]>> lines, HashSet<string> category)
         {
             if (ltDNNItemList == null)
             {

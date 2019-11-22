@@ -20,7 +20,7 @@ namespace TFDetector
     {
         private static int _imageWidth, _imageHeight, _index;
         private static List<Tuple<string, int[]>> _lines;
-        private static Dictionary<string, int> _category;
+        private static HashSet<string> _category;
 
         TFWrapper tfWrapper = new TFWrapper();
         byte[] imageByteArray;
@@ -31,7 +31,7 @@ namespace TFDetector
             _lines = lines;
         }
 
-        public List<Item> Run(Mat frameTF, int frameIndex, Dictionary<string, int> category, Brush bboxColor, double min_score_for_linebbox_overlap)
+        public List<Item> Run(Mat frameTF, int frameIndex, HashSet<string> category, Brush bboxColor, double min_score_for_linebbox_overlap)
         {
             _imageWidth = frameTF.Width;
             _imageHeight = frameTF.Height;
@@ -99,7 +99,7 @@ namespace TFDetector
 
                     int value = Convert.ToInt32(classes[i, j]);
                     CatalogItem catalogItem = TFWrapper._catalog.FirstOrDefault(item => item.Id == value);
-                    if (!_category.ContainsKey(catalogItem.DisplayName)) continue;
+                    if (!_category.Contains(catalogItem.DisplayName)) continue;
 
                     for (int k = 0; k < z; k++)
                     {

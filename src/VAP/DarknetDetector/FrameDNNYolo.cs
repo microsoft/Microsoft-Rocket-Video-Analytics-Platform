@@ -50,9 +50,9 @@ namespace DarknetDetector
             frameYoloTracking.SetTrackingObject(trackingObject);
         }
 
-        public List<YoloTrackingItem> Detect(byte[] imgByte, Dictionary<string, int> cat, int lineID, Brush bboxColor, double min_score_for_linebbox_overlap, int frameIndex = 0)
+        public List<YoloTrackingItem> Detect(byte[] imgByte, HashSet<string> category, int lineID, Brush bboxColor, double min_score_for_linebbox_overlap, int frameIndex = 0)
         {
-            IEnumerable<YoloTrackingItem> yoloItems = frameYoloTracking.Analyse(imgByte, cat, bboxColor);
+            IEnumerable<YoloTrackingItem> yoloItems = frameYoloTracking.Analyse(imgByte, category, bboxColor);
             
             return OverlapVal(imgByte, yoloItems, lineID, bboxColor, min_score_for_linebbox_overlap);
         }
@@ -98,11 +98,11 @@ namespace DarknetDetector
             }
         }
 
-        public List<Item> Run(byte[] imgByte, int frameIndex, List<Tuple<string, int[]>> lines, Dictionary<string, int> cat, Brush bboxColor)
+        public List<Item> Run(byte[] imgByte, int frameIndex, List<Tuple<string, int[]>> lines, HashSet<string> category, Brush bboxColor)
         {
             List<Item> frameDNNItem = new List<Item>();
 
-            IEnumerable<YoloTrackingItem> yoloItems = frameYoloTracking.Analyse(imgByte, cat, bboxColor);
+            IEnumerable<YoloTrackingItem> yoloItems = frameYoloTracking.Analyse(imgByte, category, bboxColor);
 
             for (int lineID = 0; lineID < lines.Count; lineID++)
             {
