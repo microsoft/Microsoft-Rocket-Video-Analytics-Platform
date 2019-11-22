@@ -28,7 +28,7 @@ namespace TFDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<Tuple<string, int[]>> lines, Dictionary<string, int> category)
+        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<Tuple<string, int[]>> lines, HashSet<string> category)
         {
             // buffer frame
             frameBufferLtDNNTF.Buffer(frame);
