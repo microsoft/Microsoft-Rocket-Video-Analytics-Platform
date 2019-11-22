@@ -37,12 +37,12 @@ namespace Utils
             }
         }
 
-        public static float checkLineBboxOverlapRatio(int[] line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
+        public static float checkLineBboxOverlapRatio((int x1, int y1, int x2, int y2) line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
         {
             float overlapRatio = 0.0F;
             int insidePixels = 0;
 
-            IEnumerable<Point> linePixels = EnumerateLineNoDiagonalSteps(line[0], line[1], line[2], line[3]);
+            IEnumerable<Point> linePixels = EnumerateLineNoDiagonalSteps(line.x1, line.y1, line.x2, line.y2);
             
             foreach(Point pixel in linePixels)
             {

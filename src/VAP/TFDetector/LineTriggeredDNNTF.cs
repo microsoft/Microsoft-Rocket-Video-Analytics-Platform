@@ -18,7 +18,7 @@ namespace TFDetector
         FrameDNNTF frameDNNTF;
         FrameBuffer frameBufferLtDNNTF;
 
-        public LineTriggeredDNNTF(List<Tuple<string, int[]>> lines)
+        public LineTriggeredDNNTF(List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines)
         {
             frameBufferLtDNNTF = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
@@ -28,7 +28,7 @@ namespace TFDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<Tuple<string, int[]>> lines, HashSet<string> category)
+        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines, HashSet<string> category)
         {
             // buffer frame
             frameBufferLtDNNTF.Buffer(frame);
@@ -41,7 +41,6 @@ namespace TFDetector
                     {
                         // call tf cheap model for crosscheck
                         int lineID = Array.IndexOf(occupancy.Keys.ToArray(), lane);
-                        int subLineID = lines[lineID].Item2.Length;
                         Mat[] frameBufferArray = frameBufferLtDNNTF.ToArray();
                         int frameIndexTF = frameIndex - 1;
                         DateTime start = DateTime.Now;

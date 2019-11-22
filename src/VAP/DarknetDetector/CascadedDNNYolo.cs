@@ -28,7 +28,7 @@ namespace DarknetDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderCcDNN);
         }
 
-        public CascadedDNNDarknet(List<Tuple<string, int[]>> lines)
+        public CascadedDNNDarknet(List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines)
         {
             frameBufferCcDNN = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
@@ -37,7 +37,7 @@ namespace DarknetDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderCcDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, List<Item> ltDNNItemList, List<Tuple<string, int[]>> lines, HashSet<string> category)
+        public List<Item> Run(Mat frame, int frameIndex, List<Item> ltDNNItemList, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines, HashSet<string> category)
         {
             if (ltDNNItemList == null)
             {
@@ -56,9 +56,8 @@ namespace DarknetDetector
                 else
                 {
                     List<YoloTrackingItem> analyzedTrackingItems = null;
-                    int subLineID = lines[ltDNNItem.TriggerLineID].Item2.Length;
-                    frameDNNYolo.SetTrackingPoint(new System.Drawing.Point((int)((lines[ltDNNItem.TriggerLineID].Item2[subLineID - 4] + lines[ltDNNItem.TriggerLineID].Item2[subLineID - 2]) / 2),
-                                                                (int)((lines[ltDNNItem.TriggerLineID].Item2[subLineID - 3] + lines[ltDNNItem.TriggerLineID].Item2[subLineID - 1]) / 2))); //only needs to check the last line in each row
+                    frameDNNYolo.SetTrackingPoint(new System.Drawing.Point((int)((lines[ltDNNItem.TriggerLineID].coordinates.x1 + lines[ltDNNItem.TriggerLineID].coordinates.x2) / 2),
+                                                                (int)((lines[ltDNNItem.TriggerLineID].coordinates.y1 + lines[ltDNNItem.TriggerLineID].coordinates.y2) / 2))); //only needs to check the last line in each row
                     byte[] imgByte = ltDNNItem.RawImageData;
 
                     Console.WriteLine("** Calling Heavy");
