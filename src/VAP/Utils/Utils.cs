@@ -37,12 +37,12 @@ namespace Utils
             }
         }
 
-        public static float checkLineBboxOverlapRatio((int x1, int y1, int x2, int y2) line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
+        public static float checkLineBboxOverlapRatio((Point p1, Point p2) line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
         {
             float overlapRatio = 0.0F;
             int insidePixels = 0;
 
-            IEnumerable<Point> linePixels = EnumerateLineNoDiagonalSteps(line.x1, line.y1, line.x2, line.y2);
+            IEnumerable<Point> linePixels = EnumerateLineNoDiagonalSteps(line.p1, line.p2);
             
             foreach(Point pixel in linePixels)
             {
@@ -56,17 +56,17 @@ namespace Utils
             return overlapRatio;
         }
 
-        private static IEnumerable<Point> EnumerateLineNoDiagonalSteps(int x0, int y0, int x1, int y1)
+        private static IEnumerable<Point> EnumerateLineNoDiagonalSteps(Point p0, Point p1)
         {
-            int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-            int dy = -Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+            int dx = Math.Abs(p1.X - p0.X), sx = p0.X < p1.X ? 1 : -1;
+            int dy = -Math.Abs(p1.Y - p0.Y), sy = p0.Y < p1.Y ? 1 : -1;
             int err = dx + dy, e2;
 
             while (true)
             {
-                yield return new Point(x0, y0);
+                yield return p0;
 
-                if (x0 == x1 && y0 == y1) break;
+                if (p0.X == p1.X && p0.Y == p1.Y) break;
 
                 e2 = 2 * err;
 
@@ -74,12 +74,12 @@ namespace Utils
                 if (e2 > dy)
                 {
                     err += dy;
-                    x0 += sx;
+                    p0.X += sx;
                 }
                 else if (e2 < dx)
                 { // <--- this "else" makes the difference
                     err += dx;
-                    y0 += sy;
+                    p0.Y += sy;
                 }
             }
         }

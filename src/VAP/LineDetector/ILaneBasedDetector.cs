@@ -19,7 +19,7 @@ namespace LineDetector
 
         Box getBbox();
 
-        (int x1, int y1, int x2, int y2) getLineCoor();
+        (Point p1, Point p2) getLineCoor();
 
         DetectionLine getDetectionLine();
     }

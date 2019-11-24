@@ -15,23 +15,24 @@ namespace LineDetector
 
         public static double DEFAULT_OCCUPANCY_THRESHOLD = 0.9; // default threhsold
 
-        public int x1, y1, x2, y2;
+        public Point p1;
+        public Point p2;
         public double increment;
         public double overlapFractionThreshold = DEFAULT_OCCUPANCY_THRESHOLD;
 
         public DetectionLine(int a, int b, int c, int d)
         {
-            x1 = a; y1 = b;
-            x2 = c; y2 = d;
-            double length = Math.Sqrt(Math.Pow((double)(y2 - y1), 2) + Math.Pow((double)(x2 - x1), 2));
+            p1 = new Point(a, b);
+            p2 = new Point(c, d);
+            double length = Math.Sqrt(Math.Pow((double)(p2.Y - p1.Y), 2) + Math.Pow((double)(p2.X - p1.X), 2));
             increment = 1 / (2 * length);
         }
 
         public DetectionLine(int a, int b, int c, int d, double l_threshold)
         {
-            x1 = a; y1 = b;
-            x2 = c; y2 = d;
-            double length = Math.Sqrt(Math.Pow((double)(y2 - y1), 2) + Math.Pow((double)(x2 - x1), 2));
+            p1 = new Point(a, b);
+            p2 = new Point(c, d);
+            double length = Math.Sqrt(Math.Pow((double)(p2.Y - p1.Y), 2) + Math.Pow((double)(p2.X - p1.X), 2));
             increment = 1 / (2 * length);
             overlapFractionThreshold = l_threshold;
         }
@@ -40,8 +41,8 @@ namespace LineDetector
         public double getFractionContainedInBox(Box b, Bitmap mask)
         {
             double eta = 0;
-            double currentX = x1 + eta * (x2 - x1);
-            double currentY = y1 + eta * (y2 - y1);
+            double currentX = p1.X + eta * (p2.X - p1.X);
+            double currentY = p1.Y + eta * (p2.Y - p1.Y);
             double lastX = -1;
             double lastY = -1;
             int totalPixelCount = 0;
@@ -62,8 +63,8 @@ namespace LineDetector
 
                 lastX = currentX; lastY = currentY;
                 eta += increment;
-                currentX = x1 + eta * (x2 - x1);
-                currentY = y1 + eta * (y2 - y1);
+                currentX = p1.X + eta * (p2.X - p1.X);
+                currentY = p1.Y + eta * (p2.Y - p1.Y);
             } while (eta <= 1);
 
             double fraction = (double)overlapCount / (double)totalPixelCount;
@@ -73,8 +74,8 @@ namespace LineDetector
         public double getFractionInForeground(Bitmap mask)
         {
             double eta = 0;
-            double currentX = x1 + eta * (x2 - x1);
-            double currentY = y1 + eta * (y2 - y1);
+            double currentX = p1.X + eta * (p2.X - p1.X);
+            double currentY = p1.Y + eta * (p2.Y - p1.Y);
             double lastX = -1;
             double lastY = -1;
             int totalPixelCount = 0;
@@ -93,8 +94,8 @@ namespace LineDetector
 
                 lastX = currentX; lastY = currentY;
                 eta += increment;
-                currentX = x1 + eta * (x2 - x1);
-                currentY = y1 + eta * (y2 - y1);
+                currentX = p1.X + eta * (p2.X - p1.X);
+                currentY = p1.Y + eta * (p2.Y - p1.Y);
             } while (eta <= 1);
 
             double fraction = (double)overlapCount / (double)totalPixelCount;
@@ -148,7 +149,7 @@ namespace LineDetector
 
         public override string ToString()
         {
-            return x1 + "\t" + y1 + "\t" + x2 + "\t" + y2 + "\t" + overlapFractionThreshold;
+            return p1.X + "\t" + p1.Y + "\t" + p2.X + "\t" + p2.Y + "\t" + overlapFractionThreshold;
         }
     }
 }

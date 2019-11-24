@@ -18,7 +18,7 @@ namespace DarknetDetector
     {
         YoloWrapper frameYolo;
         YoloTracking frameYoloTracking;
-        List<(string key, (int x1, int y1, int x2, int y2) coordinates)> _lines;
+        List<(string key, (Point p1, Point p2) coordinates)> _lines;
 
         //distance-based validation
         public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, double rFactor)
@@ -29,7 +29,7 @@ namespace DarknetDetector
         }
 
         //overlap ratio-based validation
-        public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines)
+        public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, List<(string key, (Point p1, Point p2) coordinates)> lines)
         {
             var configurationDetector = new ConfigurationDetector(modelConfig);
             frameYolo = new YoloWrapper(configurationDetector.Detect(), dnnMode);
@@ -98,7 +98,7 @@ namespace DarknetDetector
             }
         }
 
-        public List<Item> Run(byte[] imgByte, int frameIndex, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines, HashSet<string> category, Brush bboxColor)
+        public List<Item> Run(byte[] imgByte, int frameIndex, List<(string key, (Point p1, Point p2) coordinates)> lines, HashSet<string> category, Brush bboxColor)
         {
             List<Item> frameDNNItem = new List<Item>();
 
@@ -106,8 +106,8 @@ namespace DarknetDetector
 
             for (int lineID = 0; lineID < lines.Count; lineID++)
             {
-                frameYoloTracking.SetTrackingObject(new Point((int)((lines[lineID].coordinates.x1 + lines[lineID].coordinates.x2) / 2),
-                                                                (int)((lines[lineID].coordinates.y1 + lines[lineID].coordinates.y2) / 2)));
+                frameYoloTracking.SetTrackingObject(new Point((int)((lines[lineID].coordinates.p1.X + lines[lineID].coordinates.p2.X) / 2),
+                                                                (int)((lines[lineID].coordinates.p1.Y + lines[lineID].coordinates.p2.Y) / 2)));
                 List<YoloTrackingItem> analyzedTrackingItems = OverlapVal(imgByte, yoloItems, lineID, bboxColor, DNNConfig.MIN_SCORE_FOR_LINEBBOX_OVERLAP_LARGE);
                 if (analyzedTrackingItems == null) continue;
 
@@ -131,9 +131,9 @@ namespace DarknetDetector
             return frameDNNItem;
         }
 
-        private double Distance((int x1, int y1, int x2, int y2) line, Point bboxCenter)
+        private double Distance((Point p1, Point p2) line, Point bboxCenter)
         {
-            Point p1 = new Point((int)((line.x1 + line.x2)/2), (int)((line.y1+line.y2)/2));
+            Point p1 = new Point((int)((line.p1.X + line.p2.X)/2), (int)((line.p1.Y+line.p2.Y)/2));
             return Math.Sqrt(this.Pow2(bboxCenter.X - p1.X) + Pow2(bboxCenter.Y - p1.Y));
         }
 

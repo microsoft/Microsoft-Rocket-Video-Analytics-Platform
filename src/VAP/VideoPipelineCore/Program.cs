@@ -68,7 +68,7 @@ namespace VideoPipelineCore
             //-----Line Detector-----
             Detector lineDetector = new Detector(SAMPLING_FACTOR, RESOLUTION_FACTOR, lineFile, displayBGSVideo);
             Dictionary<string, bool> occupancy = null;
-            List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines = lineDetector.multiLaneDetector.getAllLines();
+            List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines = lineDetector.multiLaneDetector.getAllLines();
 
             //-----LineTriggeredDNN (Darknet)-----
             LineTriggeredDNNDarknet ltDNNDarknet = null;

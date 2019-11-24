@@ -31,7 +31,7 @@ namespace DarknetDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
-        public LineTriggeredDNNDarknet(List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines)
+        public LineTriggeredDNNDarknet(List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines)
         {
             frameBufferLtDNNYolo = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
@@ -41,7 +41,7 @@ namespace DarknetDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines, HashSet<string> category)
+        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines, HashSet<string> category)
         {
             // buffer frame
             frameBufferLtDNNYolo.Buffer(frame);
@@ -54,8 +54,8 @@ namespace DarknetDetector
                     {
                         // call yolo for crosscheck
                         int lineID = Array.IndexOf(occupancy.Keys.ToArray(), lane);
-                        frameDNNYolo.SetTrackingPoint(new System.Drawing.Point((int)((lines[lineID].coordinates.x1 + lines[lineID].coordinates.x2) / 2),
-                                                            (int)((lines[lineID].coordinates.y1 + lines[lineID].coordinates.y2) / 2))); //only needs to check the last line in each row
+                        frameDNNYolo.SetTrackingPoint(new System.Drawing.Point((int)((lines[lineID].coordinates.p1.X + lines[lineID].coordinates.p2.X) / 2),
+                                                            (int)((lines[lineID].coordinates.p1.Y + lines[lineID].coordinates.p2.Y) / 2))); //only needs to check the last line in each row
                         Mat[] frameBufferArray = frameBufferLtDNNYolo.ToArray();
                         int frameIndexYolo = frameIndex - 1;
                         DateTime start = DateTime.Now;

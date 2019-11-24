@@ -18,7 +18,7 @@ namespace TFDetector
         FrameDNNTF frameDNNTF;
         FrameBuffer frameBufferLtDNNTF;
 
-        public LineTriggeredDNNTF(List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines)
+        public LineTriggeredDNNTF(List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines)
         {
             frameBufferLtDNNTF = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
@@ -28,7 +28,7 @@ namespace TFDetector
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
-        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines, HashSet<string> category)
+        public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines, HashSet<string> category)
         {
             // buffer frame
             frameBufferLtDNNTF.Buffer(frame);

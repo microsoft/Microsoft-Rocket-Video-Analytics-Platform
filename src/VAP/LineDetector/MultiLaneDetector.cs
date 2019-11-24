@@ -58,12 +58,12 @@ namespace LineDetector
             return null;
         }
 
-        public List<(string key, (int x1, int y1, int x2, int y2) coordinates)> getAllLines()
+        public List<(string key, (Point p1, Point p2) coordinates)> getAllLines()
         {
-            List<(string key, (int x1, int y1, int x2, int y2) coordinates)> lines = new List<(string key, (int x1, int y1, int x2, int y2) coordinates)>();
+            List<(string key, (Point p1, Point p2) coordinates)> lines = new List<(string key, (Point p1, Point p2) coordinates)>();
             foreach (KeyValuePair<string, ILineBasedDetector> lane in laneDetector)
             {
-                (int x1, int y1, int x2, int y2) coor = lane.Value.getLineCoor();
+                (Point p1, Point p2) coor = lane.Value.getLineCoor();
                 lines.Add((lane.Key, coor));
             }
             return lines;
