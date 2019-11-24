@@ -46,7 +46,7 @@ namespace LineDetector
             return occupancy;
         }
 
-        public float[] getBboxCenter(string laneID)
+        public PointF? getBboxCenter(string laneID)
         {
             foreach (KeyValuePair<string, ILineBasedDetector> entry in laneDetector)
             {
@@ -55,6 +55,7 @@ namespace LineDetector
                     return entry.Value.getBbox().Center;
                 }
             }
+
             return null;
         }
 
