@@ -72,7 +72,7 @@ namespace BGSObjectDetector
             if (regionOfInterest != null)
                 bgs.SetRegionOfInterest(regionOfInterest);
 
-            Cv2.GaussianBlur(image, blurredFrame, new OpenCvSharp.Size(0, 0), PRE_BGS_BLUR_SIGMA);
+            Cv2.GaussianBlur(image, blurredFrame, Size.Zero, PRE_BGS_BLUR_SIGMA);
 
             // fgMask is the original foreground bitmap returned by opencv MOG2
             fgMask = bgs.DetectForeground(blurredFrame, frameIndex);
@@ -83,7 +83,7 @@ namespace BGSObjectDetector
             // pre-processing
             Cv2.Threshold(fgMask, fgWOShadows, 200, 255, ThresholdTypes.Binary);
             Cv2.MedianBlur(fgWOShadows, fgSmoothedMask2, MEDIAN_BLUR_SIZE);
-            Cv2.GaussianBlur(fgSmoothedMask2, fgSmoothedMask3, new OpenCvSharp.Size(0, 0), GAUSSIAN_BLUR_SIGMA);
+            Cv2.GaussianBlur(fgSmoothedMask2, fgSmoothedMask3, Size.Zero, GAUSSIAN_BLUR_SIGMA);
             Cv2.Threshold(fgSmoothedMask3, fgSmoothedMask4, GAUSSIAN_BLUR_THRESHOLD, 255, ThresholdTypes.Binary);
 
             fg = fgSmoothedMask4;
