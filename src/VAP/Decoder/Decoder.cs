@@ -8,25 +8,56 @@ namespace Decoder
 {
     public class Decoder
     {
-        VideoCapture capture = null;
-        string inputURL;
+        VideoCapture capture;
+        string[] inputURLs;
+        int inputIndex;
 
         bool toLoop;
+
+        int currentFrame;
+        int totalFrames;
+        bool skipLastFrame;
+
         Mat resizedFrame;
 
         int objTotal, objDirA, objDirB;
 
-        public Decoder(string input, bool loop)
+        public Decoder(string[] inputs, bool loop, bool skipLastFrame)
         {
-            capture = new VideoCapture(input);
-            inputURL = input;
-
+            inputIndex = -1;
+            inputURLs = inputs;
             toLoop = loop;
+            this.skipLastFrame = skipLastFrame;
+
+            MoveToNextInput();
+        }
+
+        private bool MoveToNextInput()
+        {
+            if (!toLoop && inputIndex == inputURLs.Length - 1)
+            {
+                return false;
+            }
+
+            inputIndex = (inputIndex + 1) % inputURLs.Length;
+            capture = new VideoCapture(inputURLs[inputIndex]);
+            currentFrame = -1;
+            totalFrames = (int)Math.Floor(capture.Get(CaptureProperty.FrameCount));
+            return true;
         }
 
         public Mat getNextFrame()
         {
             Mat sourceMat = new Mat();
+
+            currentFrame++;
+            if (skipLastFrame && currentFrame == totalFrames - 1)
+            {
+                if (!MoveToNextInput())
+                {
+                    return null;
+                }
+            }
 
             try
             {
@@ -38,7 +69,8 @@ namespace Decoder
                 Console.WriteLine(e.ToString());
                 Console.WriteLine("********RESET*****");
 
-                capture = new VideoCapture(inputURL);
+                capture = new VideoCapture(inputURLs[inputIndex]);
+                currentFrame = -1;
 
                 return null;
             }
@@ -46,11 +78,10 @@ namespace Decoder
             if (sourceMat == null)
                 return sourceMat;
 
-            if (toLoop)
+            if (sourceMat.Height == 0 && sourceMat.Width == 0)
             {
-                if (sourceMat.Height == 0 && sourceMat.Width == 0)
+                if (MoveToNextInput())
                 {
-                    capture = new VideoCapture(inputURL);
                     capture.Read(sourceMat);
                 }
             }
@@ -58,12 +89,15 @@ namespace Decoder
             return sourceMat;
         }
 
-        public int getTotalFrameNum()
+        public int? getTotalFrameNum()
         {
-            int length;
-            length = (int)Math.Floor(capture.Get(CaptureProperty.FrameCount));
+            if (toLoop || inputIndex < inputURLs.Length - 1)
+            {
+                // the total frame count is not known
+                return null;
+            }
 
-            return length;
+            return totalFrames;
         }
 
         public double getVideoFPS()

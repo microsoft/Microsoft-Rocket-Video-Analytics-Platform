@@ -11,6 +11,7 @@ using PostProcessor;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using TFDetector;
 using Utils.Config;
@@ -30,16 +31,19 @@ namespace VideoPipelineCore
             }
 
             string videoUrl = args[0];
+            string[] videoUrls;
             bool isVideoStream;
             if (videoUrl.Substring(0, 4) == "rtmp" || videoUrl.Substring(0, 4) == "http" || videoUrl.Substring(0, 3) == "mms" || videoUrl.Substring(0, 4) == "rtsp")
             {
+                videoUrls = new[] { videoUrl };
                 isVideoStream = true;
             }
             else
             {
                 isVideoStream = false;
-                videoUrl = @"..\..\..\..\..\..\media\" + args[0];
+                videoUrls = Directory.GetFiles(@"..\..\..\..\..\..\media\", args[0]);
             }
+
             string lineFile = @"..\..\..\..\..\..\cfg\" + args[1];
             int SAMPLING_FACTOR = int.Parse(args[2]);
             double RESOLUTION_FACTOR = double.Parse(args[3]);
@@ -60,7 +64,8 @@ namespace VideoPipelineCore
             //create pipeline components (initialization based on pplConfig)
 
             //-----Decoder-----
-            Decoder.Decoder decoder = new Decoder.Decoder(videoUrl, loop);
+            bool skipLastFrame = !isVideoStream; //skip the last frame which could be wrongly encoded from vlc capture
+            Decoder.Decoder decoder = new Decoder.Decoder(videoUrls, loop, skipLastFrame);
 
             //-----Background Subtraction-based Detector-----
             BGSObjectDetector.BGSObjectDetector bgs = new BGSObjectDetector.BGSObjectDetector();
@@ -132,9 +137,9 @@ namespace VideoPipelineCore
             List<Item> ItemList = null;
 
             int frameIndex = 0;
-            int videoTotalFrame = 0;
+            int? videoTotalFrame = 0;
             if (!isVideoStream)
-                videoTotalFrame = decoder.getTotalFrameNum() - 1; //skip the last frame which could be wrongly encoded from vlc capture
+                videoTotalFrame = decoder.getTotalFrameNum() - 1;
 
 
             //RUN PIPELINE 
@@ -142,16 +147,10 @@ namespace VideoPipelineCore
             DateTime prevTime = DateTime.Now;
             while (true)
             {
-                if (!loop)
-                {
-                    if (!isVideoStream && frameIndex >= videoTotalFrame)
-                    {
-                        break;
-                    }
-                }
-
                 //decoder
                 Mat frame = decoder.getNextFrame();
+                if (frame is null)
+                    break;
 
                 
                 //frame pre-processor
