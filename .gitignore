@@ -2,6 +2,7 @@
 obj/
 bin/
 packages/
+*.csproj.user
 
 /src/VAP/YoloWrapper/Dependencies/opencv_world340.dll
 /src/VAP/YoloWrapper/Dependencies/opencv_world340d.dll
