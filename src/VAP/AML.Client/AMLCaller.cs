@@ -41,7 +41,7 @@ namespace AML.Client
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderAML);
         }
 
-        public static async Task<List<bool>> Run(int frameIndex, List<Item> items, Dictionary<string, int> category)
+        public static async Task<List<bool>> Run(int frameIndex, List<Item> items, HashSet<string> category)
         {
             //could implement AML triggering criteria here, e.g., confidence
 
@@ -88,7 +88,7 @@ namespace AML.Client
                                 char[] delimiterChars = { ' ', ',' };
                                 foreach (var key in GetLabel(kvp.Key).Split(delimiterChars))
                                 {
-                                    if (category.ContainsKey(key))
+                                    if (category.Count == 0 || category.Contains(key))
                                     {
                                         amlResult.Add(true);
 

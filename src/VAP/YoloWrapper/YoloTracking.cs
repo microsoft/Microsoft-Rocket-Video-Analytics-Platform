@@ -30,7 +30,7 @@ namespace Wrapper.Yolo
             this._trackingObject = trackingObject;
         }
 
-        public List<YoloTrackingItem> Analyse(byte[] imageData, Dictionary<string, int> cat, Brush bboxColor)
+        public List<YoloTrackingItem> Analyse(byte[] imageData, HashSet<string> category, Brush bboxColor)
         {
             var items = this._yoloWrapper.Track(imageData);
             if (items == null || items.Count() == 0)
@@ -38,7 +38,7 @@ namespace Wrapper.Yolo
                 return null;
             }
 
-            var probableObject = this.FindAllMatch(items, this._maxDistance, cat);
+            var probableObject = this.FindAllMatch(items, this._maxDistance, category);
             if (probableObject.Count() == 0)
             {
                 return null;
@@ -65,10 +65,10 @@ namespace Wrapper.Yolo
         }
 
         //find all match based on distance
-        private List<YoloItem> FindAllMatch(IEnumerable<YoloItem> items, int maxDistance, Dictionary<string, int> cat)
+        private List<YoloItem> FindAllMatch(IEnumerable<YoloItem> items, int maxDistance, HashSet<string> category)
         {
             List<YoloItem> yItems = new List<YoloItem>();
-            var distanceItems = items.Select(o => new { Cat = o.Type, Distance = this.Distance(o.Center(), this._trackingObject), Item = o }).Where(o => (cat.ContainsKey(o.Cat) && o.Distance <= maxDistance)).OrderBy(o => o.Distance);
+            var distanceItems = items.Select(o => new { Category = o.Type, Distance = this.Distance(o.Center(), this._trackingObject), Item = o }).Where(o => (category.Count == 0 || category.Contains(o.Category)) && o.Distance <= maxDistance).OrderBy(o => o.Distance);
             foreach (var item in distanceItems)
             {
                 YoloItem yItem = item.Item;

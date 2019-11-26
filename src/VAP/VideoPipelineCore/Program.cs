@@ -22,7 +22,7 @@ namespace VideoPipelineCore
         static void Main(string[] args)
         {
             //parse arguments
-            if (args.Length < 5)
+            if (args.Length < 4)
             {
                 Console.WriteLine(args.Length);
                 Console.WriteLine("Usage: <exe> <video url> <cfg file> <samplingFactor> <resolutionFactor> <category1> <category2> ...");
@@ -44,10 +44,10 @@ namespace VideoPipelineCore
             int SAMPLING_FACTOR = int.Parse(args[2]);
             double RESOLUTION_FACTOR = double.Parse(args[3]);
 
-            Dictionary<string, int> category = new Dictionary<string, int>();
+            HashSet<string> category = new HashSet<string>();
             for (int i = 4; i < args.Length; i++)
             {
-                category.Add(args[i], 0);
+                category.Add(args[i]);
             }
 
             //initialize pipeline settings
