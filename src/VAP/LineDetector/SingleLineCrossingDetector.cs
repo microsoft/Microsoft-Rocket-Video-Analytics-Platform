@@ -48,14 +48,9 @@ namespace LineDetector
             return bbox;
         }
 
-        public int[] getLineCoor()
+        public (Point p1, Point p2) getLineCoor()
         {
-            int[] coor = new int[4];
-            coor[0] = getDetectionLine().x1;
-            coor[1] = getDetectionLine().y1;
-            coor[2] = getDetectionLine().x2;
-            coor[3] = getDetectionLine().y2;
-            return coor;
+            return (getDetectionLine().p1, getDetectionLine().p2);
         }
     }
 }

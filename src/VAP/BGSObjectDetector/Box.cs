@@ -22,7 +22,7 @@ namespace BGSObjectDetector
         public int Y0 { get { return Rectangle.Y; } }
         public int Y1 { get { return Rectangle.Y + Rectangle.Height; } }
 
-        public float[] Center { get { return new float[2] { X0 + Width / 2, Y0 + Height / 2 }; } }
+        public PointF Center { get { return new PointF(X0 + Width / 2, Y0 + Height / 2); } }
         public int Width { get { return Rectangle.Width; } }
         public int Height { get { return Rectangle.Height; } }
 

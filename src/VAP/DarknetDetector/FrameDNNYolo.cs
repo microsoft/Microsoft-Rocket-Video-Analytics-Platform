@@ -18,7 +18,7 @@ namespace DarknetDetector
     {
         YoloWrapper frameYolo;
         YoloTracking frameYoloTracking;
-        List<Tuple<string, int[]>> _lines;
+        List<(string key, (Point p1, Point p2) coordinates)> _lines;
 
         //distance-based validation
         public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, double rFactor)
@@ -29,7 +29,7 @@ namespace DarknetDetector
         }
 
         //overlap ratio-based validation
-        public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, List<Tuple<string, int[]>> lines)
+        public FrameDNNDarknet(string modelConfig, DNNMode dnnMode, List<(string key, (Point p1, Point p2) coordinates)> lines)
         {
             var configurationDetector = new ConfigurationDetector(modelConfig);
             frameYolo = new YoloWrapper(configurationDetector.Detect(), dnnMode);
@@ -81,7 +81,7 @@ namespace DarknetDetector
                 //File.WriteAllBytes(@OutputFolder.OutputFolderAll + $"tmp-{frameIndex}-{lines[lineID].Item1}.jpg", canvas);
                 ////--------------Output images with all bboxes----------------
                 
-                var overlapItems = yoloItems.Select(o => new { Overlap = Utils.Utils.checkLineBboxOverlapRatio(_lines[lineID].Item2, o.X, o.Y, o.Width, o.Height), Bbox_x = o.X + o.Width, Bbox_y = o.Y + o.Height, Distance = this.Distance(_lines[lineID].Item2, o.Center()), Item = o })
+                var overlapItems = yoloItems.Select(o => new { Overlap = Utils.Utils.checkLineBboxOverlapRatio(_lines[lineID].coordinates, o.X, o.Y, o.Width, o.Height), Bbox_x = o.X + o.Width, Bbox_y = o.Y + o.Height, Distance = this.Distance(_lines[lineID].coordinates, o.Center()), Item = o })
                     .Where(o => o.Bbox_x <= image.Width && o.Bbox_y <= image.Height && o.Overlap >= min_score_for_linebbox_overlap).OrderBy(o => o.Distance);
                 foreach (var item in overlapItems)
                 {
@@ -98,7 +98,7 @@ namespace DarknetDetector
             }
         }
 
-        public List<Item> Run(byte[] imgByte, int frameIndex, List<Tuple<string, int[]>> lines, HashSet<string> category, Brush bboxColor)
+        public List<Item> Run(byte[] imgByte, int frameIndex, List<(string key, (Point p1, Point p2) coordinates)> lines, HashSet<string> category, Brush bboxColor)
         {
             List<Item> frameDNNItem = new List<Item>();
 
@@ -106,9 +106,8 @@ namespace DarknetDetector
 
             for (int lineID = 0; lineID < lines.Count; lineID++)
             {
-                int subLineID = lines[lineID].Item2.Length;
-                frameYoloTracking.SetTrackingObject(new Point((int)((lines[lineID].Item2[subLineID - 4] + lines[lineID].Item2[subLineID - 2]) / 2),
-                                                                (int)((lines[lineID].Item2[subLineID - 3] + lines[lineID].Item2[subLineID - 1]) / 2)));
+                frameYoloTracking.SetTrackingObject(new Point((int)((lines[lineID].coordinates.p1.X + lines[lineID].coordinates.p2.X) / 2),
+                                                                (int)((lines[lineID].coordinates.p1.Y + lines[lineID].coordinates.p2.Y) / 2)));
                 List<YoloTrackingItem> analyzedTrackingItems = OverlapVal(imgByte, yoloItems, lineID, bboxColor, DNNConfig.MIN_SCORE_FOR_LINEBBOX_OVERLAP_LARGE);
                 if (analyzedTrackingItems == null) continue;
 
@@ -117,7 +116,7 @@ namespace DarknetDetector
                     Item it = Item(yoloTrackingItem);
                     it.RawImageData = imgByte;
                     it.TriggerLineID = lineID;
-                    it.TriggerLine = lines[lineID].Item1;
+                    it.TriggerLine = lines[lineID].key;
                     frameDNNItem.Add(it);
 
                     //--------------output frameDNN results - one bbox per image--------------
@@ -132,9 +131,9 @@ namespace DarknetDetector
             return frameDNNItem;
         }
 
-        private double Distance(int[] line, Point bboxCenter)
+        private double Distance((Point p1, Point p2) line, Point bboxCenter)
         {
-            Point p1 = new Point((int)((line[0] + line [2])/2), (int)((line[1]+line[3])/2));
+            Point p1 = new Point((int)((line.p1.X + line.p2.X)/2), (int)((line.p1.Y+line.p2.Y)/2));
             return Math.Sqrt(this.Pow2(bboxCenter.X - p1.X) + Pow2(bboxCenter.Y - p1.Y));
         }
 

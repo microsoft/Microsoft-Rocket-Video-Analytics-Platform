@@ -46,7 +46,7 @@ namespace LineDetector
             return occupancy;
         }
 
-        public float[] getBboxCenter(string laneID)
+        public PointF? getBboxCenter(string laneID)
         {
             foreach (KeyValuePair<string, ILineBasedDetector> entry in laneDetector)
             {
@@ -55,17 +55,17 @@ namespace LineDetector
                     return entry.Value.getBbox().Center;
                 }
             }
+
             return null;
         }
 
-        public List<Tuple<string, int[]>> getAllLines()
+        public List<(string key, (Point p1, Point p2) coordinates)> getAllLines()
         {
-            List<Tuple<string, int[]>> lines = new List<Tuple<string, int[]>>();
+            List<(string key, (Point p1, Point p2) coordinates)> lines = new List<(string key, (Point p1, Point p2) coordinates)>();
             foreach (KeyValuePair<string, ILineBasedDetector> lane in laneDetector)
             {
-                int[] coor = lane.Value.getLineCoor();
-                Tuple<string, int[]> line = new Tuple<string, int[]>(lane.Key, coor);
-                lines.Add(line);
+                (Point p1, Point p2) coor = lane.Value.getLineCoor();
+                lines.Add((lane.Key, coor));
             }
             return lines;
         }

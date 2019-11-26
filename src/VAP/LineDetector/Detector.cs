@@ -46,11 +46,11 @@ namespace LineDetector
                 // bgs visualization with lines
                 if (DISPLAY_BGS)
                 {
-                    List<Tuple<string, int[]>> lines = this.multiLaneDetector.getAllLines();
+                    List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines = this.multiLaneDetector.getAllLines();
                     for (int i = 0; i < lines.Count; i++)
                     {
-                        System.Drawing.Point p1 = new System.Drawing.Point(lines[i].Item2[0], lines[i].Item2[1]);
-                        System.Drawing.Point p2 = new System.Drawing.Point(lines[i].Item2[2], lines[i].Item2[3]);
+                        System.Drawing.Point p1 = lines[i].coordinates.p1;
+                        System.Drawing.Point p2 = lines[i].coordinates.p2;
                         Cv2.Line(fgmask, p1.X, p1.Y, p2.X, p2.Y, new OpenCvSharp.Scalar(255, 0, 255, 255), 5);
                     }
                     Cv2.ImShow("BGS Output", fgmask);

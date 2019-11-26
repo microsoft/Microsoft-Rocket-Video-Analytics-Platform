@@ -18,8 +18,8 @@ namespace LineDetector
         bool getOccupancy();
 
         Box getBbox();
-        
-        int[] getLineCoor();
+
+        (Point p1, Point p2) getLineCoor();
 
         DetectionLine getDetectionLine();
     }
