@@ -68,7 +68,7 @@ namespace Wrapper.Yolo
         private List<YoloItem> FindAllMatch(IEnumerable<YoloItem> items, int maxDistance, HashSet<string> category)
         {
             List<YoloItem> yItems = new List<YoloItem>();
-            var distanceItems = items.Select(o => new { Category = o.Type, Distance = this.Distance(o.Center(), this._trackingObject), Item = o }).Where(o => category.Contains(o.Category) && o.Distance <= maxDistance).OrderBy(o => o.Distance);
+            var distanceItems = items.Select(o => new { Category = o.Type, Distance = this.Distance(o.Center(), this._trackingObject), Item = o }).Where(o => (category.Count == 0 || category.Contains(o.Category)) && o.Distance <= maxDistance).OrderBy(o => o.Distance);
             foreach (var item in distanceItems)
             {
                 YoloItem yItem = item.Item;

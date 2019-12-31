@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Sample (cars)": {
+      "commandName": "Project",
+      "commandLineArgs": "sample.mp4 sample.txt 1 1 car"
+    },
+    "Sample (all categories)": {
+      "commandName": "Project",
+      "commandLineArgs": "sample.mp4 sample.txt 1 1"
+    }
+  }
+}

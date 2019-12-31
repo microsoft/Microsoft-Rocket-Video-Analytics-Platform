@@ -88,7 +88,7 @@ namespace AML.Client
                                 char[] delimiterChars = { ' ', ',' };
                                 foreach (var key in GetLabel(kvp.Key).Split(delimiterChars))
                                 {
-                                    if (category.Contains(key))
+                                    if (category.Count == 0 || category.Contains(key))
                                     {
                                         amlResult.Add(true);
 
