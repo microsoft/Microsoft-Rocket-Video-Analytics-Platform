@@ -87,7 +87,7 @@ Once pulled, run the command below to start Rocket with NVIDIA GPU.
 
 * **Build your own Rocket pipeline on Linux**
 	* Pull base docker image with CUDA toolkit and OpenCV. This image is needed to build Rocket docker image. 
-		`docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn`.
+	`docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn:<version>`.
 	* Git clone [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) for source code to dockerize Rocket on Linux.
 	* [Create line configuration file(s)](#prepare-video-feeds-and-line-configuration) inside `\cfg`. If you are running Rocket on a pre-recorded video, please also [copy the video file](#prepare-video-feeds-and-line-configuration) into `\media`.
 	* (Optional) Update `\src\VAP\VideoPipelineCore\App.Config` to set proper parameters for database and Azure Machine Learning service connection.
