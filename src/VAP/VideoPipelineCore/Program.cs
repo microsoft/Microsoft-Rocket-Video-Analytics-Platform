@@ -48,14 +48,12 @@ namespace VideoPipelineCore
             {
                 category.Add(args[i]);
             }
-
             //initialize pipeline settings
             int pplConfig = Convert.ToInt16(ConfigurationManager.AppSettings["PplConfig"]);
             bool loop = false;
             bool displayRawVideo = false;
             bool displayBGSVideo = false;
             Utils.Utils.cleanFolder(@OutputFolder.OutputFolderAll);
-
             //create pipeline components (initialization based on pplConfig)
 
             //-----Decoder-----
@@ -72,7 +70,7 @@ namespace VideoPipelineCore
             //-----LineTriggeredDNN (TensorFlow)-----
             LineTriggeredDNNTF ltDNNTF = null;
             List<Item> ltDNNItemListTF = null;
-            if (new int[] { 5 }.Contains(pplConfig))
+            if (new int[] { 5, 6 }.Contains(pplConfig))
             {
                 ltDNNTF = new LineTriggeredDNNTF(lines);
                 ltDNNItemListTF = new List<Item>();
@@ -124,7 +122,7 @@ namespace VideoPipelineCore
                 //decoder
                 Mat frame = decoder.getNextFrame();
 
-                
+
                 //frame pre-processor
                 frame = FramePreProcessor.PreProcessor.returnFrame(frame, frameIndex, SAMPLING_FACTOR, RESOLUTION_FACTOR, displayRawVideo);
                 frameIndex++;
@@ -138,14 +136,14 @@ namespace VideoPipelineCore
                 
 
                 //line detector
-                if (new int[] { 0, 4, 5 }.Contains(pplConfig))
+                if (new int[] { 0, 4, 5, 6 }.Contains(pplConfig))
                 {
                     occupancy = lineDetector.updateLineOccupancy(frame, frameIndex, fgmask, foregroundBoxes);
                 }
 
 
                 //cheap DNN
-                if (new int[] { 4, 5 }.Contains(pplConfig))
+                if (new int[] { 4, 5, 6 }.Contains(pplConfig))
                 {
                     ltDNNItemListTF = ltDNNTF.Run(frame, frameIndex, occupancy, lines, category);
                     ItemList = ltDNNItemListTF;

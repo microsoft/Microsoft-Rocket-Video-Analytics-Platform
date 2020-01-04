@@ -3,72 +3,76 @@ FROM ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn:0.1 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ./src/VAP/AML.Client/*.csproj ./AML.Client/
-COPY ./src/VAP/AML.tfserving/*.csproj ./AML.tfserving/
-COPY ./src/VAP/BGSObjectDetector/*.csproj ./BGSObjectDetector/
-COPY ./src/VAP/Decoder/*.csproj ./Decoder/
-COPY ./src/VAP/FramePreProcessor/*.csproj ./FramePreProcessor/
-COPY ./src/VAP/LineDetector/*.csproj ./LineDetector/
-COPY ./src/VAP/PostProcessor/*.csproj ./PostProcessor/
-COPY ./src/VAP/TFDetector/*.csproj ./TFDetector/
-COPY ./src/VAP/TFWrapper/*.csproj ./TFWrapper/
-COPY ./src/VAP/Utils/*.csproj ./Utils/
-COPY ./src/VAP/VideoPipelineCore/*.csproj ./VideoPipelineCore/
-RUN dotnet restore ./AML.tfserving/
-RUN dotnet restore ./AML.Client/
-RUN dotnet restore ./BGSObjectDetector/
-RUN dotnet restore ./Decoder/
-RUN dotnet restore ./FramePreProcessor/
-RUN dotnet restore ./PostProcessor/
-RUN dotnet restore ./LineDetector/
-RUN dotnet restore ./TFDetector/
-RUN dotnet restore ./TFWrapper/
-RUN dotnet restore ./Utils/
-RUN dotnet restore ./VideoPipelineCore/
+COPY ./eng/Versions.props ./eng/Versions.props
+COPY ./src/Directory.Build.props ./src/Directory.Build.props
+COPY ./src/Directory.Build.targets ./src/Directory.Build.targets
+COPY ./src/VAP/AML.Client/*.csproj ./src/VAP/AML.Client/
+COPY ./src/VAP/AML.tfserving/*.csproj ./src/VAP/AML.tfserving/
+COPY ./src/VAP/BGSObjectDetector/*.csproj ./src/VAP/BGSObjectDetector/
+COPY ./src/VAP/Decoder/*.csproj ./src/VAP/Decoder/
+COPY ./src/VAP/DNNDetector/ ./src/VAP/DNNDetector/
+COPY ./src/VAP/FramePreProcessor/*.csproj ./src/VAP/FramePreProcessor/
+COPY ./src/VAP/LineDetector/*.csproj ./src/VAP/LineDetector/
+COPY ./src/VAP/PostProcessor/*.csproj ./src/VAP/PostProcessor/
+COPY ./src/VAP/TFDetector/*.csproj ./src/VAP/TFDetector/
+COPY ./src/VAP/TFWrapper/*.csproj ./src/VAP/TFWrapper/
+COPY ./src/VAP/Utils/*.csproj ./src/VAP/Utils/
+COPY ./src/VAP/VideoPipelineCore/*.csproj ./src/VAP/VideoPipelineCore/
+RUN dotnet restore ./src/VAP/AML.tfserving/
+RUN dotnet restore ./src/VAP/AML.Client/
+RUN dotnet restore ./src/VAP/BGSObjectDetector/
+RUN dotnet restore ./src/VAP/Decoder/
+RUN dotnet restore ./src/VAP/DNNDetector/
+RUN dotnet restore ./src/VAP/FramePreProcessor/
+RUN dotnet restore ./src/VAP/PostProcessor/
+RUN dotnet restore ./src/VAP/LineDetector/
+RUN dotnet restore ./src/VAP/TFDetector/
+RUN dotnet restore ./src/VAP/TFWrapper/
+RUN dotnet restore ./src/VAP/Utils/
+RUN dotnet restore ./src/VAP/VideoPipelineCore/
 
 # Copy everything else and build
-COPY ./src/VAP/AML.Client/ ./AML.Client/
-COPY ./src/VAP/AML.tfserving/ ./AML.tfserving/
-COPY ./src/VAP/BGSObjectDetector/ ./BGSObjectDetector/
-COPY ./src/VAP/Decoder/ ./Decoder/
-COPY ./src/VAP/DNNDetector/ ./DNNDetector/
-COPY ./src/VAP/FramePreProcessor/ ./FramePreProcessor/
-COPY ./src/VAP/LineDetector/ ./LineDetector/
-COPY ./src/VAP/PostProcessor/ ./PostProcessor/
-COPY ./src/VAP/TFDetector/ ./TFDetector/
-COPY ./src/VAP/TFWrapper/ ./TFWrapper/
-COPY ./src/VAP/Utils/ ./Utils/
-COPY ./src/VAP/VideoPipelineCore/ ./VideoPipelineCore/
-COPY ./cfg/imagenet-classes.json /cfg/imagenet-classes.json
-RUN dotnet publish ./Utils/ -c Release -o out
-RUN dotnet publish ./TFWrapper/ -c Release -o out
-RUN dotnet publish ./DNNDetector/ -c Release -o out
-RUN dotnet publish ./BGSObjectDetector/ -c Release -o out
-RUN dotnet publish ./AML.tfserving/ -c Release -o out
-RUN dotnet publish ./TFDetector/ -c Release -o out
-RUN dotnet publish ./Decoder/ -c Release -o out
-RUN dotnet publish ./FramePreProcessor/ -c Release -o out
-RUN dotnet publish ./AML.Client/ -c Release -o out
-RUN dotnet publish ./PostProcessor/ -c Release -o out
-RUN dotnet publish ./LineDetector/ -c Release -o out
-RUN dotnet publish ./VideoPipelineCore/ -c Release -o out
+COPY ./src/VAP/AML.Client/ ./src/VAP/AML.Client/
+COPY ./src/VAP/AML.tfserving/ ./src/VAP/AML.tfserving/
+COPY ./src/VAP/BGSObjectDetector/ ./src/VAP/BGSObjectDetector/
+COPY ./src/VAP/Decoder/ ./src/VAP/Decoder/
+COPY ./src/VAP/DNNDetector/ ./src/VAP/DNNDetector/
+COPY ./src/VAP/FramePreProcessor/ ./src/VAP/FramePreProcessor/
+COPY ./src/VAP/LineDetector/ ./src/VAP/LineDetector/
+COPY ./src/VAP/PostProcessor/ ./src/VAP/PostProcessor/
+COPY ./src/VAP/TFDetector/ ./src/VAP/TFDetector/
+COPY ./src/VAP/TFWrapper/ ./src/VAP/TFWrapper/
+COPY ./src/VAP/Utils/ ./src/VAP/Utils/
+COPY ./src/VAP/VideoPipelineCore/ ./src/VAP/VideoPipelineCore/
+COPY ./cfg/imagenet-classes.json ./cfg/imagenet-classes.json
+RUN dotnet publish ./src/VAP/Utils/ -c Release -o out
+RUN dotnet publish ./src/VAP/TFWrapper/ -c Release -o out
+RUN dotnet publish ./src/VAP/DNNDetector/ -c Release -o out
+RUN dotnet publish ./src/VAP/BGSObjectDetector/ -c Release -o out
+RUN dotnet publish ./src/VAP/AML.tfserving/ -c Release -o out
+RUN dotnet publish ./src/VAP/TFDetector/ -c Release -o out
+RUN dotnet publish ./src/VAP/Decoder/ -c Release -o out
+RUN dotnet publish ./src/VAP/FramePreProcessor/ -c Release -o out
+RUN dotnet publish ./src/VAP/AML.Client/ -c Release -o out
+RUN dotnet publish ./src/VAP/PostProcessor/ -c Release -o out
+RUN dotnet publish ./src/VAP/LineDetector/ -c Release -o out
+RUN dotnet publish ./src/VAP/VideoPipelineCore/ -c Release -o out
 
 # Build runtime image
-# FROM dbeeva.azurecr.io/base-opencvsharp-18.04-cuda-cudnn:1
-FROM dbeeva.azurecr.io/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn:0.1
+FROM ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn:0.1
 WORKDIR /app
-COPY --from=build-env /app/Utils/out .
-COPY --from=build-env /app/TFWrapper/out .
-COPY --from=build-env /app/DNNDetector/out .
-COPY --from=build-env /app/BGSObjectDetector/out .
-COPY --from=build-env /app/AML.tfserving/out .
-COPY --from=build-env /app/TFDetector/out .
-COPY --from=build-env /app/Decoder/out .
-COPY --from=build-env /app/PostProcessor/out .
-COPY --from=build-env /app/LineDetector/out .
-COPY --from=build-env /app/FramePreProcessor/out .
-COPY --from=build-env /app/AML.Client/out .
-COPY --from=build-env /app/VideoPipelineCore/out .
+COPY --from=build-env /app/src/VAP/Utils/out .
+COPY --from=build-env /app/src/VAP/TFWrapper/out .
+COPY --from=build-env /app/src/VAP/DNNDetector/out .
+COPY --from=build-env /app/src/VAP/BGSObjectDetector/out .
+COPY --from=build-env /app/src/VAP/AML.tfserving/out .
+COPY --from=build-env /app/src/VAP/TFDetector/out .
+COPY --from=build-env /app/src/VAP/Decoder/out .
+COPY --from=build-env /app/src/VAP/PostProcessor/out .
+COPY --from=build-env /app/src/VAP/LineDetector/out .
+COPY --from=build-env /app/src/VAP/FramePreProcessor/out .
+COPY --from=build-env /app/src/VAP/AML.Client/out .
+COPY --from=build-env /app/src/VAP/VideoPipelineCore/out .
 COPY ./cfg ./cfg
 COPY ./media ./media
 COPY ./src/VAP/TFWrapper/packages/TensorFlowSharp.1.12.0/runtimes/linux/native/libtensorflow.so /usr/local/lib

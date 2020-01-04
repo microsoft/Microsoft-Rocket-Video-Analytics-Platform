@@ -10,10 +10,7 @@ namespace Decoder
     {
         VideoCapture capture = null;
         string inputURL;
-
         bool toLoop;
-        Mat resizedFrame;
-
         int objTotal, objDirA, objDirB;
 
         public Decoder(string input, bool loop)
