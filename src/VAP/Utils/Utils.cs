@@ -12,11 +12,22 @@ namespace Utils
 {
     public class Utils
     {
-        public static void cleanFolder(string folder)
+        static void cleanFolder(string folder)
         {
             Directory.CreateDirectory(folder);
             DirectoryInfo di = new DirectoryInfo(folder);
             foreach (FileInfo file in di.GetFiles()) file.Delete();
+        }
+
+        public static void cleanFolderAll()
+        {
+            cleanFolder(Config.OutputFolder.OutputFolderAll);
+            cleanFolder(Config.OutputFolder.OutputFolderBGSLine);
+            cleanFolder(Config.OutputFolder.OutputFolderLtDNN);
+            cleanFolder(Config.OutputFolder.OutputFolderCcDNN);
+            cleanFolder(Config.OutputFolder.OutputFolderAML);
+            cleanFolder(Config.OutputFolder.OutputFolderFrameDNNDarknet);
+            cleanFolder(Config.OutputFolder.OutputFolderFrameDNNTF);
         }
 
         public static byte[] ImageToByteBmp(Image imageIn)

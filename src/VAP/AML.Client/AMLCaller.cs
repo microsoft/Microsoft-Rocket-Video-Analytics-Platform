@@ -37,8 +37,6 @@ namespace AML.Client
             {
                 Console.WriteLine("AML init error:" + e);
             }
-
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderAML);
         }
 
         public static async Task<List<bool>> Run(int frameIndex, List<Item> items, HashSet<string> category)

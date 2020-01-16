@@ -24,16 +24,35 @@ namespace LineDetector
                     }
                     string[] fields = line.Split('\t');
                     string directionName = fields[0];
-                    
-                    //noLines has to be 1 in Line Detector
-                    int x1 = (int)(Convert.ToInt32(fields[2 + 0 * 5]) * imageScaling);
-                    int y1 = (int)(Convert.ToInt32(fields[3 + 0 * 5]) * imageScaling);
-                    int x2 = (int)(Convert.ToInt32(fields[4 + 0 * 5]) * imageScaling);
-                    int y2 = (int)(Convert.ToInt32(fields[5 + 0 * 5]) * imageScaling);
-                    double threshold = Convert.ToDouble(fields[6 + 0 * 5]);
-                    SingleLineCrossingDetector lineDetector = new SingleLineCrossingDetector(x1, y1, x2, y2, threshold, sFactor);
+                    int noLines = Convert.ToInt32(fields[1]);
+                    List<ISingleLineCrossingDetector> lineDetectors = new List<ISingleLineCrossingDetector>();
 
-                    ret.Add(directionName, lineDetector);
+                    for (int i = 0; i < noLines; i++)
+                    {
+                        int x1 = (int)(Convert.ToInt32(fields[2 + 0 * 5]) * imageScaling);
+                        int y1 = (int)(Convert.ToInt32(fields[3 + 0 * 5]) * imageScaling);
+                        int x2 = (int)(Convert.ToInt32(fields[4 + 0 * 5]) * imageScaling);
+                        int y2 = (int)(Convert.ToInt32(fields[5 + 0 * 5]) * imageScaling);
+                        double threshold = Convert.ToDouble(fields[6 + 0 * 5]);
+                        SingleLineCrossingDetector lineDetector = new SingleLineCrossingDetector(x1, y1, x2, y2, threshold, sFactor);
+
+                        lineDetectors.Add(lineDetector);
+                    }
+                    List<int> minLags = new List<int>();
+                    for (int i = 0; i < noLines - 1; i++)
+                    {
+                        int lag = Convert.ToInt32(fields[noLines * 5 + 2 + i]);
+                        minLags.Add(lag);
+                    }
+                    List<int> maxLags = new List<int>();
+                    for (int i = 0; i < noLines - 1; i++)
+                    {
+                        int lag = Convert.ToInt32(fields[noLines * 6 + 1 + i]);
+                        maxLags.Add(lag);
+                    }
+                    CascadedLinesDetector counter = new CascadedLinesDetector(lineDetectors, minLags, maxLags);
+
+                    ret.Add(directionName, counter);
                 } while (true);
                 r.Close();
             }

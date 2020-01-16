@@ -23,9 +23,6 @@ namespace TFDetector
             frameBufferLtDNNTF = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
             frameDNNTF = new FrameDNNTF(lines);
-
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderBGSLine);
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderLtDNN);
         }
 
         public List<Item> Run(Mat frame, int frameIndex, Dictionary<string, bool> occupancy, List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines, HashSet<string> category)

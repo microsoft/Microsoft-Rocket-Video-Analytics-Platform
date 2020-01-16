@@ -15,12 +15,22 @@ namespace LineDetector
 
         void notifyFrameArrival(int frameNo, Bitmap mask);
 
+        void setDebug();
+
+        List<List<double>> getOccupancyHistory();
+
+        DetectionLine getDetectionLine();
+
         bool getOccupancy();
+
+        int getCount();
+
+        void setCount(int value);
 
         Box getBbox();
 
-        (Point p1, Point p2) getLineCoor();
+        Dictionary<string, Object> getParameters();
 
-        DetectionLine getDetectionLine();
+        List<(Point p1, Point p2)> getLineCoor();
     }
 }

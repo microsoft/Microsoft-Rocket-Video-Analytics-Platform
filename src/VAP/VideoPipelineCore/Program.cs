@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using TFDetector;
-using Utils.Config;
 
 namespace VideoPipelineCore
 {
@@ -55,7 +54,7 @@ namespace VideoPipelineCore
             bool loop = false;
             bool displayRawVideo = true;
             bool displayBGSVideo = false;
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderAll);
+            Utils.Utils.cleanFolderAll();
 
             //create pipeline components (initialization based on pplConfig)
 
@@ -67,6 +66,7 @@ namespace VideoPipelineCore
 
             //-----Line Detector-----
             Detector lineDetector = new Detector(SAMPLING_FACTOR, RESOLUTION_FACTOR, lineFile, displayBGSVideo);
+            Dictionary<string, int> counts = null;
             Dictionary<string, bool> occupancy = null;
             List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines = lineDetector.multiLaneDetector.getAllLines();
 
@@ -104,7 +104,6 @@ namespace VideoPipelineCore
             {
                 frameDNNDarknet = new FrameDNNDarknet("YoloV3TinyCoco", Wrapper.Yolo.DNNMode.Frame, lines);
                 frameDNNDarknetItemList = new List<Item>();
-                Utils.Utils.cleanFolder(@OutputFolder.OutputFolderFrameDNNDarknet);
             }
 
             //-----DNN on every frame (TensorFlow)-----
@@ -114,7 +113,6 @@ namespace VideoPipelineCore
             {
                 frameDNNTF = new FrameDNNTF(lines);
                 frameDNNTFItemList = new List<Item>();
-                Utils.Utils.cleanFolder(@OutputFolder.OutputFolderFrameDNNTF);
             }
 
             //-----Call ML models deployed on Azure Machine Learning Workspace-----
@@ -169,14 +167,14 @@ namespace VideoPipelineCore
                 //line detector
                 if (new int[] { 0, 3, 4, 5 }.Contains(pplConfig))
                 {
-                    occupancy = lineDetector.updateLineOccupancy(frame, frameIndex, fgmask, foregroundBoxes);
+                    (counts, occupancy) = lineDetector.updateLineResults(frame, frameIndex, fgmask, foregroundBoxes);
                 }
 
 
                 //cheap DNN
                 if (new int[] { 3, 4 }.Contains(pplConfig))
                 {
-                    ltDNNItemListDarknet = ltDNNDarknet.Run(frame, frameIndex, occupancy, lines, category);
+                    ltDNNItemListDarknet = ltDNNDarknet.Run(frame, frameIndex, counts, lines, category);
                     ItemList = ltDNNItemListDarknet;
                 }
                 else if (new int[] { 5 }.Contains(pplConfig))

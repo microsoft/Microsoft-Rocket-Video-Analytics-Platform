@@ -36,6 +36,16 @@ namespace LineDetector
             }
         }
 
+        public Dictionary<string, int> getCounts()
+        {
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+            foreach (KeyValuePair<string, ILineBasedDetector> entry in laneDetector)
+            {
+                counts.Add(entry.Key, entry.Value.getCount());
+            }
+            return counts;
+        }
+
         public Dictionary<string, bool> getOccupancy()
         {
             Dictionary<string, bool> occupancy = new Dictionary<string, bool>();
@@ -64,7 +74,7 @@ namespace LineDetector
             List<(string key, (Point p1, Point p2) coordinates)> lines = new List<(string key, (Point p1, Point p2) coordinates)>();
             foreach (KeyValuePair<string, ILineBasedDetector> lane in laneDetector)
             {
-                (Point p1, Point p2) coor = lane.Value.getLineCoor();
+                (Point p1, Point p2) coor = lane.Value.getLineCoor()[0];
                 lines.Add((lane.Key, coor));
             }
             return lines;

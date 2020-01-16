@@ -1,6 +1,6 @@
 # Microsoft Rocket Video Analytics Platform
 
-A highly extensible software stack to empower everyone to build practical real-world live video analytics applications for object detection and alerting with cutting edge machine learning algorithms. The repository features a hybrid edge-cloud video analytics pipeline (built on **C# .NET Core**), which allows **TensorFlow DNN model plug-in**, **GPU/FPGA acceleration**, **docker containerization/Kubernetes orchestration**, and **interactive querying** for after-the-fact analysis. A brief summary of Rocket platform can be found inside :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
+A highly extensible software stack to empower everyone to build practical real-world live video analytics applications for object detection and counting/alerting with cutting edge machine learning algorithms. The repository features a hybrid edge-cloud video analytics pipeline (built on **C# .NET Core**), which allows **TensorFlow DNN model plug-in**, **GPU/FPGA acceleration**, **docker containerization/Kubernetes orchestration**, and **interactive querying** for after-the-fact analysis. A brief summary of Rocket platform can be found inside :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
 
 ## How to run the code
 
@@ -44,7 +44,7 @@ Check out the [repository](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platf
 
 #### Prepare video feeds and line configuration
 * Prepare video feeds. Rocket can be fed with either live video streams (e.g., `rtsp://<url>:<port>/`) or local video files (should be put into `\media\`). A sample video file `sample.mp4` is already included in `\media\`. 
-* Prepare a configuration file (should be placed into `\cfg\`) used in line-based alerting and cascaded DNN calls. Each line in the file defines a line-of-interest with the format below.  
+* Prepare a configuration file (should be placed into `\cfg\`) used in line-based counting/alerting and cascaded DNN calls. Each line in the file defines a line-of-interest with the format below.  
 	`<line_name> <line_id> <x_1> <y_1> <x_2> <y_2> <overlap_threshold>`  
 A line configuration file `sample.txt` manually created based on `sample.mp4` is also included in the folder `\cfg\`.
 	<img src="https://y0q1qa.dm.files.1drv.com/y4mkb3rylNVwm6m-V5ZbyLr6B0kgnqlLr29Y7qGYP6RirrOntpoCKSKEwgSj5yeRLCP4WgqDUd9O7B77wqmP18h_nEHaH4_J1djnGQ0gIN1XDbArx2Unuo6sZVndCBJl1R_Iq8DIrDJoTo-trJz5CZ3LAMqlJ_UYrxb0PslDnhLj9hJf2sB0dTOuGCXKr_VEZSlp3jf55VEYSbTYYee-O5nXg?width=721&height=406&cropmode=none" alt="sampleline" width="700">
@@ -53,7 +53,7 @@ A line configuration file `sample.txt` manually created based on `sample.mp4` is
 * Run `Config.bat` before the first time you run Rocket to download pre-compiled OpenCV and TensorFlow binaries as well as Darknet YOLO weights files. It may take few minutes depending on your network status. Proceed only when all downloads finish. YOLOv3 and Tiny YOLOv3 are already included in Rocket. You can plug-in other [YOLO models](https://pjreddie.com/darknet/yolo/) as you wish.
 * Launch `VAP.sln` in `src\VAP\` from Visual Studio.
 * Set pipeline config `PplConfig` in VideoPipelineCore - App.config. We have pre-compiled six configurations in the code. Pipeline descriptions are also included in :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
-	* 0: Line-based alerting
+	* 0: Line-based counting
     * 1: Darknet Yolo v3 on every frame ([slide #7](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=7))
     * 2: TensorFlow FastRCNN on every frame ([slide #8](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=8))
     * 3: Background subtraction-based (BGS) early filtering -> Darknet Tiny Yolo -> Darknet Yolo v3 ([slide #9](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf#page=9))
@@ -86,7 +86,7 @@ Once pulled, run the command below to start Rocket with NVIDIA GPU.
 `docker run --runtime=nvidia -v <local directory>:/app/output ycshu086/rocket-sample-edgeonly:0.1 sample.mp4 sample.txt 1 1 car`
 
 * **Build your own Rocket pipeline on Linux**
-	* Pull base docker image with CUDA toolkit and OpenCV. This image is needed to build Rocket docker image. 
+	* Pull base docker image with CUDA toolkit and OpenCV. This image is needed to build Rocket docker image.  
 	`docker pull ycshu086/ubuntu-dotnetcore-opencv-opencvsharp-cuda-cudnn:<version>`.
 	* Git clone [docker branch](https://github.com/microsoft/Microsoft-Rocket-Video-Analytics-Platform/tree/docker/) for source code to dockerize Rocket on Linux.
 	* [Create line configuration file(s)](#prepare-video-feeds-and-line-configuration) inside `\cfg`. If you are running Rocket on a pre-recorded video, please also [copy the video file](#prepare-video-feeds-and-line-configuration) into `\media`.

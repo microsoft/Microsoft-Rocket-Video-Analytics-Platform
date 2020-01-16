@@ -24,8 +24,6 @@ namespace DarknetDetector
             frameBufferCcDNN = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
             frameDNNYolo = new FrameDNNDarknet(YOLOCONFIG, DNNMode.CC, rFactor);
-
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderCcDNN);
         }
 
         public CascadedDNNDarknet(List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines)
@@ -33,8 +31,6 @@ namespace DarknetDetector
             frameBufferCcDNN = new FrameBuffer(DNNConfig.FRAME_SEARCH_RANGE);
 
             frameDNNYolo = new FrameDNNDarknet(YOLOCONFIG, DNNMode.CC, lines);
-
-            Utils.Utils.cleanFolder(@OutputFolder.OutputFolderCcDNN);
         }
 
         public List<Item> Run(Mat frame, int frameIndex, List<Item> ltDNNItemList, List<(string key, (System.Drawing.Point p1, System.Drawing.Point p2) coordinates)> lines, HashSet<string> category)

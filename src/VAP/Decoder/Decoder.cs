@@ -12,7 +12,6 @@ namespace Decoder
         string inputURL;
 
         bool toLoop;
-        Mat resizedFrame;
 
         int objTotal, objDirA, objDirB;
 

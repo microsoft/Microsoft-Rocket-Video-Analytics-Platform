@@ -29,7 +29,7 @@ namespace Wrapper.TF
         private static string _catalogPath;
         private static string _modelPath;
 
-        private static double MIN_SCORE_FOR_OBJECT_HIGHLIGHTING = 0.5;
+        //private static double MIN_SCORE_FOR_OBJECT_HIGHLIGHTING = 0.5;
 
         static OptionSet options = new OptionSet()
         {
