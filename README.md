@@ -20,7 +20,7 @@ A highly extensible software stack to empower everyone to build practical real-w
 
 	* **CUDA 9.1** (e.g., cuda_9.1.85_win10_network.exe) is needed to support TensorFlow models.
 
-	* **cuDNN 8.0** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip).
+	* **cuDNN v7** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip).
 	
 		Copy `<installpath>\cuda\bin\cudnn64_7.dll` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin`.  
 		Copy `<installpath>\cuda\ include\cudnn.h` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include`.  
