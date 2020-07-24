@@ -18,5 +18,7 @@
         public static string OutputFolderFrameDNNDarknet { get; set; } = "../../output_framednndarknet/";
 
         public static string OutputFolderFrameDNNTF { get; set; } = "../../output_framednntf/";
+
+        public static string OutputFolderFrameDNNONNX { get; set; } = "../../output_framednnonnx/";
     }
 }

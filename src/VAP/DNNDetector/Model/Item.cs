@@ -37,6 +37,19 @@ namespace DNNDetector.Model
             this.TriggerLine = lineName;
         }
 
+        public Item(Wrapper.ORT.ORTItem onnxYoloItem)
+        {
+            this.X = onnxYoloItem.X;
+            this.Y = onnxYoloItem.Y;
+            this.Width = onnxYoloItem.Width;
+            this.Height = onnxYoloItem.Height;
+            this.ObjId = onnxYoloItem.ObjId;
+            this.ObjName = onnxYoloItem.ObjName;
+            this.Confidence = onnxYoloItem.Confidence;
+            this.TriggerLineID = onnxYoloItem.TriggerLineID;
+            this.TriggerLine = onnxYoloItem.TriggerLine;
+        }
+
         public Point Center()
         {
             return new Point(this.X + this.Width / 2, this.Y + this.Height / 2);

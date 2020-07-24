@@ -8,3 +8,7 @@ powershell -Command "(New-Object Net.WebClient).DownloadFile('https://aka.ms/Mic
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://pjreddie.com/media/files/yolov3.weights', './src/VAP/YoloWrapper/Yolo.Config/YoloV3Coco/yolov3.weights')"
 
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://pjreddie.com/media/files/yolov3-tiny.weights', './src/VAP/YoloWrapper/Yolo.Config/YoloV3TinyCoco/yolov3-tiny.weights')"
+
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-yolov3ort.onnx', './modelOnnx/yolov3ort.onnx')"
+
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-yolov3tinyort.onnx', './modelOnnx/yolov3tinyort.onnx')"

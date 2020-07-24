@@ -12,7 +12,7 @@ namespace Utils
 {
     public class Utils
     {
-        static void cleanFolder(string folder)
+        public static void cleanFolder(string folder)
         {
             Directory.CreateDirectory(folder);
             DirectoryInfo di = new DirectoryInfo(folder);
@@ -28,6 +28,7 @@ namespace Utils
             cleanFolder(Config.OutputFolder.OutputFolderAML);
             cleanFolder(Config.OutputFolder.OutputFolderFrameDNNDarknet);
             cleanFolder(Config.OutputFolder.OutputFolderFrameDNNTF);
+            cleanFolder(Config.OutputFolder.OutputFolderFrameDNNONNX);
         }
 
         public static byte[] ImageToByteBmp(Image imageIn)
@@ -46,6 +47,12 @@ namespace Utils
                 imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                 return ms.ToArray();
             }
+        }
+
+        public static float checkLineBboxOverlapRatio(int[] line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
+        {
+            (Point p1, Point p2) newLine = (new Point(line[0], line[1]), new Point(line[2], line[3]));
+            return checkLineBboxOverlapRatio(newLine, bbox_x, bbox_y, bbox_w, bbox_h);
         }
 
         public static float checkLineBboxOverlapRatio((Point p1, Point p2) line, int bbox_x, int bbox_y, int bbox_w, int bbox_h)
@@ -129,6 +136,28 @@ namespace Utils
                     return memoryStream2.ToArray();
                 }
             }
+        }
+
+        public static List<Tuple<string, int[]>> ConvertLines(List<(string key, (Point p1, Point p2) coordinates)> lines)
+        {
+            List<Tuple<string, int[]>> newLines = new List<Tuple<string, int[]>>();
+            foreach ((string key, (Point p1, Point p2) coordinates) line in lines)
+            {
+                int[] coor = new int[] { line.coordinates.p1.X, line.coordinates.p1.Y, line.coordinates.p2.X, line.coordinates.p2.Y };
+                Tuple<string, int[]> newLine = new Tuple<string, int[]>(line.key, coor);
+                newLines.Add(newLine);
+            }
+            return newLines;
+        }
+
+        public static Dictionary<string, int> CatHashSet2Dict(HashSet<string> cat)
+        {
+            Dictionary<string, int> catDict = new Dictionary<string, int>();
+            foreach (string c in cat)
+            {
+                catDict.Add(c, 0);
+            }
+            return catDict;
         }
     }
 }
