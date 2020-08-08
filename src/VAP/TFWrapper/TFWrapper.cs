@@ -114,9 +114,12 @@ namespace Wrapper.TF
         private static string DownloadDefaultModel(string dir)
         {
             string defaultModelUrl = "http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet101_coco_2018_01_28.tar.gz";
-
             var modelFile = Path.Combine(dir, "faster_rcnn_resnet101_coco_2018_01_28/frozen_inference_graph.pb");
             var zipfile = Path.Combine(dir, "faster_rcnn_resnet101_coco_2018_01_28.tar.gz");
+
+            //string defaultModelUrl = "http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_ppn_shared_box_predictor_300x300_coco14_sync_2018_07_03.tar.gz";
+            //var modelFile = Path.Combine(dir, "ssd_mobilenet_v1_ppn_shared_box_predictor_300x300_coco14_sync_2018_07_03/frozen_inference_graph.pb");
+            //var zipfile = Path.Combine(dir, "ssd_mobilenet_v1_ppn_shared_box_predictor_300x300_coco14_sync_2018_07_03.tar.gz");
 
             if (File.Exists(modelFile))
                 return modelFile;

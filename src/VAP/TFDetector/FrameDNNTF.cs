@@ -31,7 +31,7 @@ namespace TFDetector
             _lines = lines;
         }
 
-        public List<Item> Run(Mat frameTF, int frameIndex, HashSet<string> category, Brush bboxColor, double min_score_for_linebbox_overlap)
+        public List<Item> Run(Mat frameTF, int frameIndex, HashSet<string> category, Brush bboxColor, double min_score_for_linebbox_overlap, bool saveImg = true)
         {
             _imageWidth = frameTF.Width;
             _imageHeight = frameTF.Height;
@@ -64,17 +64,20 @@ namespace TFDetector
             }
 
             // output tf results
-            foreach (Item it in validObjects)
+            if (saveImg)
             {
-                string blobName_TF = $@"frame-{frameIndex}-TF-{it.Confidence}.jpg";
-                string fileName_TF = @OutputFolder.OutputFolderFrameDNNTF + blobName_TF;
-                File.WriteAllBytes(fileName_TF, it.TaggedImageData);
-                File.WriteAllBytes(@OutputFolder.OutputFolderAll + blobName_TF, it.TaggedImageData);
-
-                using (Image image = Image.FromStream(new MemoryStream(it.TaggedImageData)))
+                foreach (Item it in validObjects)
                 {
-                    image.Save(@OutputFolder.OutputFolderFrameDNNTF + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
-                    image.Save(@OutputFolder.OutputFolderAll + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
+                    string blobName_TF = $@"frame-{frameIndex}-TF-{it.Confidence}.jpg";
+                    string fileName_TF = @OutputFolder.OutputFolderFrameDNNTF + blobName_TF;
+                    File.WriteAllBytes(fileName_TF, it.TaggedImageData);
+                    File.WriteAllBytes(@OutputFolder.OutputFolderAll + blobName_TF, it.TaggedImageData);
+
+                    using (Image image = Image.FromStream(new MemoryStream(it.TaggedImageData)))
+                    {
+                        image.Save(@OutputFolder.OutputFolderFrameDNNTF + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
+                        image.Save(@OutputFolder.OutputFolderAll + $"frame-{frameIndex}-TF-{it.Confidence}.jpg", ImageFormat.Jpeg);
+                    }
                 }
             }
 
