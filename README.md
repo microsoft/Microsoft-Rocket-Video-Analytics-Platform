@@ -8,10 +8,16 @@ A highly extensible software stack to empower everyone to build practical real-w
 
 #### Setup on Windows
 
-* [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/) (VS 2017 is preferred) is recommended IDE for Rocket on Windows 10. While installing Visual Studio, please also add C++ 2015.3 v14.00 (v140) toolset to your local machine. Snapshot below shows how to include C++ 2015.3 v14.00 from Visual Studio Installer.  
+* You need to have GPU on your computer to get Rocket Analytics dev environment working on your machine. If you have access to the Azure Cloud, you can get the setup working using Data Science Virtual Machine - Windows 2016 - Gen1 image. 
+
+* [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/) (VS 2017 is preferred) is recommended IDE for Rocket on Windows 10. While installing Visual Studio, please also add C++ 2015.3 v14.00 (v140) toolset (It can be found under components tab) to your local machine. Snapshot below shows how to include C++ 2015.3 v14.00 from Visual Studio Installer. 
 	<img src="https://mntmwg.dm.files.1drv.com/y4mqIJhU_BMCDfndscmI1apnWjXOAd0FAGvjAuyVVt5tJyGgahURnXi4L8SMO9Wxw00IvLRp0cN4PEhhM1OevN28O8ejxoU5KY7syzsn6BWEPARNyabivS28P_PG1CznLltnPKfmt9pv4qMgVo-MV38XL2Snl8g6lPMaqIa6YWbgmxFfSAzeqbULngzrabIRyTy3lSDLrd39PEFnTwK-avkrQ?width=1608&height=1033&cropmode=none" alt="C++v140" width="1000">
 
-* Follow [instructions](https://dotnet.microsoft.com/download) to install .NET Core 2.2 (2.2.102 is preferred).
+* If you have already installed Visual Studion 2017, than click on Visual Studio Installer and modify option to download the C++ 2015.3 v12.00 toolset.
+
+* You need to download .Net SDK 2.2 and .Net core 2.2 (2.2.102 is preferred) at https://dotnet.microsoft.com/download/dotnet-core/2.2
+
+* Please make sure you un-install all other versions of .Net core and SDK. When you type dotnet --version in Powershell, you need to get 2.2.10.
 
 * To enable GPU support, install [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) and [cuDNN](https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#download). Please also make sure your [NVIDIA driver](https://www.nvidia.com/Download/index.aspx?lang=en-us) is up-to-date. 
 	* **CUDA 8.0** (e.g., cuda_8.0.61_win10_network.exe) is needed for Darknet (e.g., YOLO) models.
@@ -20,13 +26,15 @@ A highly extensible software stack to empower everyone to build practical real-w
 
 	* **CUDA 9.1** (e.g., cuda_9.1.85_win10_network.exe) is needed to support TensorFlow models.
 
-	* **cuDNN v7** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip).
+	* **cuDNN v7** is preferred (e.g., cudnn-8.0-windows10-x64-v7.2.1.38.zip). Nvidia will force you to register and sign in to the website. Please use latest version of the Edge/Chrome browser to access the website. For instance, you can go to https://developer.nvidia.com/rdp/cudnn-archive and download cuDNN v7.1.4 (May 16, 2018), for CUDA 8.0 libray.
 	
 		Copy `<installpath>\cuda\bin\cudnn64_7.dll` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin`.  
 		Copy `<installpath>\cuda\ include\cudnn.h` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\include`.  
 		Copy `<installpath>\cuda\lib\x64\cudnn.lib` to `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0\lib\x64`.  
 		Add Variable Name: `CUDA_PATH` with Variable Value: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v8.0` into Environment Variables.  
 		<img src="https://mntnwg.dm.files.1drv.com/y4mqF18Exoc2MwmT_HccCRrH9_DkoCAa19frsS7tyQqnNGqfjFuowZTfAZsCysgmzMPsdfw4pN6SkYkLKRCcQfhDzD_uNYA3PlyqtPe9b9EXuXZhNfH3yZudjeJq9tVi5Gm_VVLeE2Y0j4AKW01ANs6e0qSHR027D2hKtrwCODB4yQp-f_SH3DAzi0HeoUZunwnExihbfQwZq1mNii-CZStmw?width=1950&height=1303&cropmode=none" alt="PathVariable" width="600">
+
+    * Please delete other versions of CUDA, that you might have on the machine. You can use nvcc command to confirm the version 
 
 	* **Restart your computer** after installing CUDA and cuDNN.
 
