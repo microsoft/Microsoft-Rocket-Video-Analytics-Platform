@@ -1,6 +1,8 @@
 # Microsoft Rocket Video Analytics Platform
 
-A highly extensible software stack to empower everyone to build practical real-world live video analytics applications for object detection and counting/alerting with cutting edge machine learning algorithms. The repository features a hybrid edge-cloud video analytics pipeline (built on **C# .NET Core**), which allows **TensorFlow DNN model plug-in**, **GPU/FPGA acceleration**, **docker containerization/Kubernetes orchestration**, and **interactive querying** for after-the-fact analysis. A brief summary of Rocket platform can be found inside :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf).
+A highly extensible software stack to empower everyone to build practical real-world live video analytics applications for object detection and counting/alerting with cutting edge machine learning algorithms. The repository features a hybrid edge-cloud video analytics pipeline (built on **C# .NET Core**), which allows **TensorFlow DNN model plug-in**, **GPU/FPGA acceleration**, **docker containerization/Kubernetes orchestration**, and **interactive querying** for after-the-fact analysis. A brief summary of Rocket platform can be found inside :memo:[Rocket-features-and-pipelines.pdf](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platform-Rocket-features-and-pipelines.pdf). 
+
+Feel free to check out our :memo:[webinar on Rocket](https://note.microsoft.com/MSR-Webinar-Microsoft-Rocket-Registration-On-Demand.html) from Dec 2019. 
 
 ## How to run the code
 
