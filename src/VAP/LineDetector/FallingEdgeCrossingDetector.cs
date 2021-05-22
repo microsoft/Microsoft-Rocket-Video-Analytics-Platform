@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace LineDetector
 {
+    /// <summary>
+    /// A line crossing detector that fires when an item leaves the line area.
+    /// </summary>
     class FallingEdgeCrossingDetector : ICrossingDetector
     {
         List<int> FrameNoList = new List<int>();
@@ -14,12 +17,21 @@ namespace LineDetector
         bool debug = false;
         public List<double> debug_occupancySequence;
 
+        /// <summary>
+        /// Enables debug mode. Within <see cref="FallingEdgeCrossingDetector"/>, this enables logging occupancy values.
+        /// </summary>
+        /// <remarks>
+        /// The occupancy log may be accessed with <see cref="getLineOccupancyHistory"/>.</remarks>
         public void setDebug()
         {
             debug = true;
             debug_occupancySequence = new List<double>();
         }
 
+        /// <summary>
+        /// Creates a <see cref="FallingEdgeCrossingDetector"/> with the provided frame rate sampling factor.
+        /// </summary>
+        /// <param name="sFactor">The frame rate sampling factor. Note that particularly large values could behave unexpectedly.</param>
         public FallingEdgeCrossingDetector(int sFactor)
         {
             UP_STATE_TRANSITION_LENGTH = (int)Math.Ceiling((double)UP_STATE_TRANSITION_LENGTH / sFactor);
@@ -61,6 +73,12 @@ namespace LineDetector
 
 
         //return true if there was a line crossing event
+        /// <summary>
+        /// Notifies the detector of a new occupancy state at a given frame.
+        /// </summary>
+        /// <param name="frameNo">The index of the frame of interest.</param>
+        /// <param name="occupancy">The occupancy state at that frame.</param>
+        /// <returns>Returns true if an event was detected, and false otherwise.</returns>
         public bool notifyOccupancy(int frameNo, bool occupancy)
         {
             while (FrameNoList.Count > 0)
@@ -116,11 +134,19 @@ namespace LineDetector
             return CheckForStateTransision();
         }
 
+        /// <summary>
+        /// Gets the occupancy state of the detector as of the latest frame.
+        /// </summary>
+        /// <returns></returns>
         public OCCUPANCY_STATE getState()
         {
             return curState;
         }
 
+        /// <summary>
+        /// Gets a list of all occupancy values observed by the detector while debugging has been enabled. No frame indices are included.
+        /// </summary>
+        /// <returns></returns>
         public List<double> getLineOccupancyHistory()
         {
             return debug_occupancySequence;
