@@ -25,7 +25,7 @@ namespace LineDetector
         ///     <item><description>The y coordinate of the first point of the line within the video frame. (an integer)</description></item>
         ///     <item><description>The x coordinate of the second point of the line within the video frame. (an integer)</description></item>
         ///     <item><description>The y coordinate of the second point of the line within the video frame. (an integer)</description></item>
-        ///     <item><description>The overlap fraction threshold.</item>
+        ///     <item><description>The overlap fraction threshold.</description></item>
         ///   </list>
         /// </remarks>
         public static Dictionary<string, ILineBasedDetector> readLineSet_LineDetector_FromTxtFile(string fileName, int sFactor, double imageScaling)
