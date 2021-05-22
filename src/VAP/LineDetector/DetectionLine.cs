@@ -36,7 +36,7 @@ namespace LineDetector
         public double overlapFractionThreshold { get; set; } = DEFAULT_OCCUPANCY_THRESHOLD;
 
         /// <summary>
-        /// Creates a <c>DetectionLine</c> using the given coordinates.
+        /// Creates a <see cref="DetectionLine"/> using the given coordinates.
         /// </summary>
         /// <param name="a">The X coordinate of the first point of the line.</param>
         /// <param name="b">The Y coordinate of the first point of the line.</param>
@@ -51,7 +51,7 @@ namespace LineDetector
         }
 
         /// <summary>
-        /// Creates a <c>DetectionLine</c> using the given coordinates.
+        /// Creates a <see cref="DetectionLine"/> using the given coordinates.
         /// </summary>
         /// <param name="a">The X coordinate of the first point of the line.</param>
         /// <param name="b">The Y coordinate of the first point of the line.</param>
@@ -68,7 +68,7 @@ namespace LineDetector
         }
 
         /// <summary>
-        /// Calculates the fraction of the <c>DetectionLine</c> that overlaps the given mask AND the given box.
+        /// Calculates the fraction of the <see cref="DetectionLine"/> that overlaps the given mask AND the given box.
         /// </summary>
         /// <param name="b">The bounding box of the area of interest in the mask.</param>
         /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
@@ -110,11 +110,11 @@ namespace LineDetector
         }
 
         /// <summary>
-        /// Calculates the fraction of the <c>DetectionLine</c> which overlaps the given mask.
+        /// Calculates the fraction of the <see cref="DetectionLine"/> which overlaps the given mask.
         /// </summary>
         /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
         /// <returns>
-        /// Returns the fraction, from 0 to 1, of this <c>DetectionLine</c> that
+        /// Returns the fraction, from 0 to 1, of this <see cref="DetectionLine"/> that
         /// overlaps the given mask with a value of 0 indicating no overlap and a value of 1
         /// indicating complete overlap.
         /// </returns>
@@ -151,11 +151,11 @@ namespace LineDetector
 
 
         /// <summary>
-        /// Finds the box with the maximum overlap fraction with this <c>DetectionLine</c>
+        /// Finds the box with the maximum overlap fraction with this <see cref="DetectionLine"/>.
         /// </summary>
-        /// <param name="boxes">The list of <c>Box</c> objects to check, representing the bounding boxes of items in frame.</param>
+        /// <param name="boxes">The list of <see cref="Box"/> objects to check, representing the bounding boxes of items in frame.</param>
         /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
-        /// <returns>Returns a <c>Tuple</c> containing both the maximum overlap fraction found, and the <c>Box</c> associated with that overlap.</returns>
+        /// <returns>Returns a <see cref="Tuple{double, Box}"/> containing both the maximum overlap fraction found, and the <see cref="Box"/> associated with that overlap.</returns>
         public (double frac, Box b) getMaximumFractionContainedInAnyBox(List<Box> boxes, Bitmap mask)
         {
             double maxOverlapFraction = 0;
@@ -180,7 +180,7 @@ namespace LineDetector
         /// <param name="boxes">The bounding boxes of items in the frame.</param>
         /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
         /// <returns>
-        /// Returns a <c>Tuple</c> containing a boolean indicating whether this line is
+        /// Returns a <see cref="Tuple{bool, Box}"/> containing a boolean indicating whether this line is
         /// occupied, and the bounding box of the occupying item if so. If this line is
         /// unoccupied, the bounding box will be null.
         /// </returns>
