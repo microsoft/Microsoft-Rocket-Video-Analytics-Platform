@@ -28,7 +28,7 @@
         /// <returns>Returns true if an event was detected, and false otherwise.</returns>
         bool notifyOccupancy(int frameNo, bool occupancy);
 
-        //[TODO] Should be a property.
+        //TODO(isaach): Should be a property.
         /// <summary>
         /// Gets the occupancy state of the detector as of the latest frame.
         /// </summary>
