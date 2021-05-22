@@ -15,11 +15,33 @@ namespace LineDetector
 
         public static double DEFAULT_OCCUPANCY_THRESHOLD = 0.9; // default threhsold
 
-        public Point p1;
-        public Point p2;
-        public double increment;
-        public double overlapFractionThreshold = DEFAULT_OCCUPANCY_THRESHOLD;
+        /// <summary>
+        /// The first point of the line.
+        /// </summary>
+        public Point p1 { get; set; }
 
+        /// <summary>
+        /// The second point of the line.
+        /// </summary>
+        public Point p2 { get; set; }
+
+        /// <summary>
+        /// The step size used to determine occupancy.
+        /// </summary>
+        public double increment { get; set; }
+
+        /// <summary>
+        /// The overlap threshold used to determine occupancy.
+        /// </summary>
+        public double overlapFractionThreshold { get; set; } = DEFAULT_OCCUPANCY_THRESHOLD;
+
+        /// <summary>
+        /// Creates a <c>DetectionLine</c> using the given coordinates.
+        /// </summary>
+        /// <param name="a">The X coordinate of the first point of the line.</param>
+        /// <param name="b">The Y coordinate of the first point of the line.</param>
+        /// <param name="c">The X coordinate of the second point of the line.</param>
+        /// <param name="d">The Y coordinate of the second point of the line.</param>
         public DetectionLine(int a, int b, int c, int d)
         {
             p1 = new Point(a, b);
@@ -28,6 +50,14 @@ namespace LineDetector
             increment = 1 / (2 * length);
         }
 
+        /// <summary>
+        /// Creates a <c>DetectionLine</c> using the given coordinates.
+        /// </summary>
+        /// <param name="a">The X coordinate of the first point of the line.</param>
+        /// <param name="b">The Y coordinate of the first point of the line.</param>
+        /// <param name="c">The X coordinate of the second point of the line.</param>
+        /// <param name="d">The Y coordinate of the second point of the line.</param>
+        /// <param name="l_threshold">The overlap acceptance threshold used for a positive detection.</param>
         public DetectionLine(int a, int b, int c, int d, double l_threshold)
         {
             p1 = new Point(a, b);
@@ -37,7 +67,15 @@ namespace LineDetector
             overlapFractionThreshold = l_threshold;
         }
 
-
+        /// <summary>
+        /// Calculates the fraction of the <c>DetectionLine</c> that overlaps the given mask AND the given box.
+        /// </summary>
+        /// <param name="b">The bounding box of the area of interest in the mask.</param>
+        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <returns>
+        /// Returns a value from 0 to 1 indicating the fraction of the line which
+        /// overlaps the given mask with 0 indicating no overlap and 1 indicating complete overlap.
+        /// </returns>
         public double getFractionContainedInBox(Box b, Bitmap mask)
         {
             double eta = 0;
@@ -56,7 +94,7 @@ namespace LineDetector
 
                 bool isInside = b.IsPointInterior((int)currentX, (int)currentY);
 
-                if (mask.GetPixel((int)currentX, (int)currentY).ToString() == "Color [A=255, R=255, G=255, B=255]")
+                if (mask.GetPixel((int)currentX, (int)currentY).ToArgb() == (~0) )
                 {
                     overlapCount++;
                 }
@@ -71,6 +109,15 @@ namespace LineDetector
             return fraction;
         }
 
+        /// <summary>
+        /// Calculates the fraction of the <c>DetectionLine</c> which overlaps the given mask.
+        /// </summary>
+        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <returns>
+        /// Returns the fraction, from 0 to 1, of this <c>DetectionLine</c> that
+        /// overlaps the given mask with a value of 0 indicating no overlap and a value of 1
+        /// indicating complete overlap.
+        /// </returns>
         public double getFractionInForeground(Bitmap mask)
         {
             double eta = 0;
@@ -87,7 +134,7 @@ namespace LineDetector
 
                 totalPixelCount++;
 
-                if (mask.GetPixel((int)currentX, (int)currentY).ToString() == "Color [A=255, R=255, G=255, B=255]")
+                if ( mask.GetPixel( (int)currentX, (int)currentY ).ToArgb() == ( ~0 ) )
                 {
                     overlapCount++;
                 }
@@ -103,6 +150,12 @@ namespace LineDetector
         }
 
 
+        /// <summary>
+        /// Finds the box with the maximum overlap fraction with this <c>DetectionLine</c>
+        /// </summary>
+        /// <param name="boxes">The list of <c>Box</c> objects to check, representing the bounding boxes of items in frame.</param>
+        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <returns>Returns a <c>Tuple</c> containing both the maximum overlap fraction found, and the <c>Box</c> associated with that overlap.</returns>
         public (double frac, Box b) getMaximumFractionContainedInAnyBox(List<Box> boxes, Bitmap mask)
         {
             double maxOverlapFraction = 0;
@@ -121,6 +174,16 @@ namespace LineDetector
             return (maxOverlapFraction, maxB);
         }
 
+        /// <summary>
+        /// Determines if this line is occupied.
+        /// </summary>
+        /// <param name="boxes">The bounding boxes of items in the frame.</param>
+        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <returns>
+        /// Returns a <c>Tuple</c> containing a boolean indicating whether this line is
+        /// occupied, and the bounding box of the occupying item if so. If this line is
+        /// unoccupied, the bounding box will be null.
+        /// </returns>
         public (bool occupied, Box box) isOccupied(List<Box> boxes, Bitmap mask)
         {
             (double frac, Box b) = getMaximumFractionContainedInAnyBox(boxes, mask);
@@ -134,6 +197,11 @@ namespace LineDetector
             }
         }
 
+        /// <summary>
+        /// Determines if this line is occupied.
+        /// </summary>
+        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <returns>Returns true if the line is occupied, and false otherwise.</returns>
         public bool isOccupied(Bitmap mask)
         {
             double frac = getFractionInForeground(mask);

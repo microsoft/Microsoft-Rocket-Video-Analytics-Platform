@@ -15,7 +15,11 @@ namespace LineDetector
     {
         bool DISPLAY_BGS;
 
-        public int START_DELAY = 120; //this is an initial delay we put in for the background subtractor to kick in, N_FRAMES_TO_LEARN in MOG2.cs
+        /// <summary>
+        /// The initial delay to allow for the background subtractor to kick in, N_FRAMES_TO_LEARN in MOG2.cs
+        /// </summary>
+        public int START_DELAY = 120;
+
 
         public MultiLaneDetector multiLaneDetector;
 
@@ -24,6 +28,13 @@ namespace LineDetector
         Dictionary<string, bool> occupancy = new Dictionary<string, bool>();
         Dictionary<string, bool> occupancy_prev = new Dictionary<string, bool>();
 
+        /// <summary>
+        /// Constructs a <c>Detector</c> object with the provided 
+        /// </summary>
+        /// <param name="sFactor">Sampling rate scaling factor.</param>
+        /// <param name="rFactor">Resolution scaling factor.</param>
+        /// <param name="linesFile">A file specifying the lines used for the line-crossing algorithm.</param>
+        /// <param name="displayBGS">True to display a separate image each frame with the current frame number, the lines used, and the changes from the previous frame.</param>
         public Detector(int sFactor, double rFactor, string linesFile, bool displayBGS)
         {
             Dictionary<string, ILineBasedDetector> lineBasedDetectors = LineSets.readLineSet_LineDetector_FromTxtFile(linesFile, sFactor, rFactor);
@@ -34,6 +45,18 @@ namespace LineDetector
             Console.WriteLine(linesFile);
         }
 
+        /// <summary>
+        /// Checks for items crossing the provided LineSet.
+        /// </summary>
+        /// <param name="frame">The frame to check.</param>
+        /// <param name="frameIndex">The index of the frame given.</param>
+        /// <param name="fgmask">The foreground mask of the frame.</param>
+        /// <param name="boxes">A list of bounding boxes of items in the frame which deviate from the background.</param>
+        /// <returns>
+        ///   <para>Returns a <c>Tuple</c> with two <c>Dictionaries</c>.</para>
+        ///   <para>The first dictionary contains the number of items which cross the lines of interest, indexed by line name.</para>
+        ///   <para>The second dictionary contains a boolean for each line indicating whether or not an item is present at that line.</para>
+        /// </returns>
         public (Dictionary<string, int>, Dictionary<string, bool>) updateLineResults(Mat frame, int frameIndex, Mat fgmask, List<Box> boxes)
         {
             if (frameIndex > START_DELAY)
@@ -53,7 +76,7 @@ namespace LineDetector
                         Cv2.Line(fgmask, p1.X, p1.Y, p2.X, p2.Y, new Scalar(255, 0, 255, 255), 5);
                     }
                     Cv2.ImShow("BGS Output", fgmask);
-                    Cv2.WaitKey(1);
+                    //Cv2.WaitKey(1);
                 }
             }
             counts = multiLaneDetector.getCounts();
