@@ -53,7 +53,7 @@ namespace LineDetector
         /// <param name="fgmask">The foreground mask of the frame.</param>
         /// <param name="boxes">A list of bounding boxes of items in the frame which deviate from the background.</param>
         /// <returns>
-        ///   <para>Returns a <see cref="Tuple"/> with two <see cref="Dictionary{TKey, TValue}">Dictionaries</see>.</para>
+        ///   <para>Returns a tuple with two <see cref="Dictionary{TKey, TValue}">Dictionaries</see>.</para>
         ///   <para>The first dictionary contains the number of items which cross the lines of interest, indexed by line name.</para>
         ///   <para>The second dictionary contains a boolean for each line indicating whether or not an item is present at that line.</para>
         /// </returns>

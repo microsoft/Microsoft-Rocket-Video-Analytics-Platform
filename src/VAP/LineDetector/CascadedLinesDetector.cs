@@ -153,12 +153,7 @@ namespace LineDetector
             }
         }
 
-        /// <summary>
-        /// Processes a frame upon arrival.
-        /// </summary>
-        /// <param name="frameNo">The index of the frame to process.</param>
-        /// <param name="boxes">A list of bounding boxes of items in frame.</param>
-        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <inheritdoc/>
         public void notifyFrameArrival(int frameNo, List<Box> boxes, Bitmap mask)
         {
             for (int i = 0; i < noLines; i++)
@@ -172,11 +167,7 @@ namespace LineDetector
             }
         }
 
-        /// <summary>
-        /// Processes a frame upon arrival.
-        /// </summary>
-        /// <param name="frameNo">The index of the frame to process.</param>
-        /// <param name="mask">A mask detailing the precise layout of items in the frame using black to indicate vacant space, and white to indicate occupied space.</param>
+        /// <inheritdoc/>
         public void notifyFrameArrival(int frameNo, Bitmap mask)
         {
             for (int i = 0; i < noLines; i++)
@@ -192,7 +183,6 @@ namespace LineDetector
         /// <summary>
         /// Gets the number of times that this detector has been triggered.
         /// </summary>
-        /// <returns></returns>
         public int getCount()
         {
             return Count;
@@ -201,7 +191,6 @@ namespace LineDetector
         /// <summary>
         /// Gets the bounding box of the line used by this detector.
         /// </summary>
-        /// <returns></returns>
         public Box getBbox()
         {
             return Bbox;
@@ -210,7 +199,6 @@ namespace LineDetector
         /// <summary>
         /// Sets the count of this detector.
         /// </summary>
-        /// <param name="value"></param>
         public void setCount(int value)
         {
             Count = value;
@@ -223,7 +211,7 @@ namespace LineDetector
         }
 
         /// <summary>
-        /// Gets a <c>Dictionary</c> of the parameters used by this detector, stored by name.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of the parameters used by this detector, stored by name.
         /// </summary>
         /// <returns></returns>
         public Dictionary<string, Object> getParameters()
@@ -238,7 +226,7 @@ namespace LineDetector
         /// <summary>
         /// Gets the current occupancy state of this detector. This updates when the detector is notified of a frame arrival.
         /// </summary>
-        /// <returns>Returns true if the line is occupied, and false otherwise.</returns>
+        /// <returns><see langword="true"/> if the line is occupied; otherwise, <see langword="false"/>.</returns>
         public bool getOccupancy()
         {
             return lineCrossingDetectors[0].getOccupancy();
@@ -247,7 +235,6 @@ namespace LineDetector
         /// <summary>
         /// Gets the line segments used by this detector.
         /// </summary>
-        /// <returns></returns>
         public List<(Point p1, Point p2)> getLineCoor()
         {
             List<(Point p1, Point p2)> coors = new List<(Point p1, Point p2)>();
