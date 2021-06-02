@@ -6,6 +6,9 @@ using BGSObjectDetector;
 
 namespace LineDetector
 {
+    /// <summary>
+    /// Detector that uses a series of lines to detect the approach of items and fires when the items cross the final line.
+    /// </summary>
     class CascadedLinesDetector : ILineBasedDetector
     {
         List<ISingleLineCrossingDetector> lineCrossingDetectors;
@@ -19,6 +22,9 @@ namespace LineDetector
         List<int> lastEventFrame;
         bool debug = false;
 
+        /// <summary>
+        /// Activates debug logging.
+        /// </summary>
         public void setDebug()
         {
             debug = true;
@@ -28,6 +34,9 @@ namespace LineDetector
             }
         }
 
+        /// <summary>
+        /// Provides a history of the occupancy of this line detector, with each entry containing a list of occupancy values for each line considered by this detector.
+        /// </summary>
         public List<List<double>> getOccupancyHistory()
         {
             List<List<double>> ret = new List<List<double>>();
@@ -45,6 +54,12 @@ namespace LineDetector
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="CascadedLinesDetector"/> using the provided detectors, 
+        /// </summary>
+        /// <param name="l_lineDetectors">A list of <see cref="ISingleLineCrossingDetector"/> objects to use in this detector.</param>
+        /// <param name="l_minLags">The minimum number of events to store in the internal buffer.</param>
+        /// <param name="l_maxLags">The maximum number of events to store in the internal buffer.</param>
         public CascadedLinesDetector(List<ISingleLineCrossingDetector> l_lineDetectors, List<int> l_minLags, List<int> l_maxLags)
         {
             lineCrossingDetectors = l_lineDetectors;
@@ -138,6 +153,7 @@ namespace LineDetector
             }
         }
 
+        /// <inheritdoc/>
         public void notifyFrameArrival(int frameNo, List<Box> boxes, Bitmap mask)
         {
             for (int i = 0; i < noLines; i++)
@@ -151,6 +167,7 @@ namespace LineDetector
             }
         }
 
+        /// <inheritdoc/>
         public void notifyFrameArrival(int frameNo, Bitmap mask)
         {
             for (int i = 0; i < noLines; i++)
@@ -163,16 +180,25 @@ namespace LineDetector
             }
         }
 
+        /// <summary>
+        /// Gets the number of times that this detector has been triggered.
+        /// </summary>
         public int getCount()
         {
             return Count;
         }
 
+        /// <summary>
+        /// Gets the bounding box of the line used by this detector.
+        /// </summary>
         public Box getBbox()
         {
             return Bbox;
         }
 
+        /// <summary>
+        /// Sets the count of this detector.
+        /// </summary>
         public void setCount(int value)
         {
             Count = value;
@@ -184,6 +210,10 @@ namespace LineDetector
             return CrossingEventTimeStampBuffers[lineNo].Count;
         }
 
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of the parameters used by this detector, stored by name.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, Object> getParameters()
         {
             Dictionary<string, Object> ret = new Dictionary<string, object>();
@@ -193,11 +223,18 @@ namespace LineDetector
             return ret;
         }
 
+        /// <summary>
+        /// Gets the current occupancy state of this detector. This updates when the detector is notified of a frame arrival.
+        /// </summary>
+        /// <returns><see langword="true"/> if the line is occupied; otherwise, <see langword="false"/>.</returns>
         public bool getOccupancy()
         {
             return lineCrossingDetectors[0].getOccupancy();
         }
 
+        /// <summary>
+        /// Gets the line segments used by this detector.
+        /// </summary>
         public List<(Point p1, Point p2)> getLineCoor()
         {
             List<(Point p1, Point p2)> coors = new List<(Point p1, Point p2)>();
@@ -209,6 +246,9 @@ namespace LineDetector
             return coors;
         }
 
+        /// <summary>
+        /// Gets the <see cref="DetectionLine"/> used by this detector.
+        /// </summary>
         public DetectionLine getDetectionLine()
         {
             return lineCrossingDetectors[0].getDetectionLine();

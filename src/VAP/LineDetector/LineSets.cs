@@ -9,6 +9,25 @@ namespace LineDetector
 {
     class LineSets
     {
+        /// <summary>
+        /// Reads a line set from the provided CSV text file.
+        /// </summary>
+        /// <param name="fileName">The name of the file to read.</param>
+        /// <param name="sFactor">The </param>
+        /// <param name="imageScaling"></param>
+        /// <returns>Returns a Dictionary with all lines contained in the provided file, indexed by name.</returns>
+        /// <remarks>
+        /// The file provided to this function is expected to contain the following values in order, separated by the tab character:
+        ///   <list type="bullet">
+        ///     <item><description>The name of the line. (a string)</description></item>
+        ///     <item><description>The number of lines in the file. (an integer)</description></item>
+        ///     <item><description>The x coordinate of the first point of the line within the video frame. (an integer)</description></item>
+        ///     <item><description>The y coordinate of the first point of the line within the video frame. (an integer)</description></item>
+        ///     <item><description>The x coordinate of the second point of the line within the video frame. (an integer)</description></item>
+        ///     <item><description>The y coordinate of the second point of the line within the video frame. (an integer)</description></item>
+        ///     <item><description>The overlap fraction threshold.</description></item>
+        ///   </list>
+        /// </remarks>
         public static Dictionary<string, ILineBasedDetector> readLineSet_LineDetector_FromTxtFile(string fileName, int sFactor, double imageScaling)
         {
             Dictionary<string, ILineBasedDetector> ret = new Dictionary<string, ILineBasedDetector>();
