@@ -48,8 +48,8 @@ Check out the [repository](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platf
 * Prepare video feeds. Rocket can be fed with either live video streams (e.g., `rtsp://<url>:<port>/`) or local video files (should be put into `\media\`). A sample video file `sample.mp4` is already included in `\media\`. 
 * Prepare a configuration file (should be placed into `\cfg\`) used in line-based counting/alerting and cascaded DNN calls. Each line in the file defines a line-of-interest with the format below.  
 	`<line_name> <line_id> <x_1> <y_1> <x_2> <y_2> <overlap_threshold>`  
-A line configuration file `sample.txt` manually created based on `sample.mp4` is also included in the folder `\cfg\`.
-	<img src="https://y0q1qa.dm.files.1drv.com/y4mkb3rylNVwm6m-V5ZbyLr6B0kgnqlLr29Y7qGYP6RirrOntpoCKSKEwgSj5yeRLCP4WgqDUd9O7B77wqmP18h_nEHaH4_J1djnGQ0gIN1XDbArx2Unuo6sZVndCBJl1R_Iq8DIrDJoTo-trJz5CZ3LAMqlJ_UYrxb0PslDnhLj9hJf2sB0dTOuGCXKr_VEZSlp3jf55VEYSbTYYee-O5nXg?width=721&height=406&cropmode=none" alt="sampleline" width="700">
+A line configuration file `sample.txt` manually created based on `sample.mp4` is also included in the folder `\cfg\`.  
+To learn more about configuring your own lines of interest, please visit [this page](https://github.com/Azure/live-video-analytics/blob/master/ref-apps/rocket/notebooks/line_configuration.md). 
 
 #### Build on Windows
 * Run `Config.bat` before the first time you run Rocket to download pre-compiled OpenCV and TensorFlow binaries as well as Darknet YOLO weights files. It may take few minutes depending on your network status. Proceed only when all downloads finish. YOLOv3 and Tiny YOLOv3 are already included in Rocket. You can plug-in other [YOLO models](https://pjreddie.com/darknet/yolo/) as you wish.
