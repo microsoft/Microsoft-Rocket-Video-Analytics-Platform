@@ -49,7 +49,7 @@ Check out the [repository](https://aka.ms/Microsoft-Rocket-Video-Analytics-Platf
 * Prepare a configuration file (should be placed into `\cfg\`) used in line-based counting/alerting and cascaded DNN calls. Each line in the file defines a line-of-interest with the format below.  
 	`<line_name> <line_id> <x_1> <y_1> <x_2> <y_2> <overlap_threshold>`  
 A line configuration file `sample.txt` manually created based on `sample.mp4` is also included in the folder `\cfg\`.  
-To learn more about configuring your own lines of interest, please visit [this page](https://github.com/Azure/live-video-analytics/blob/master/ref-apps/rocket/notebooks/line_configuration.md). 
+To learn more about configuring your own lines of interest, please visit [this page](./documents/line_configuration.md). 
 
 #### Build on Windows
 * Run `Config.bat` before the first time you run Rocket to download pre-compiled OpenCV and TensorFlow binaries as well as Darknet YOLO weights files. It may take few minutes depending on your network status. Proceed only when all downloads finish. YOLOv3 and Tiny YOLOv3 are already included in Rocket. You can plug-in other [YOLO models](https://pjreddie.com/darknet/yolo/) as you wish.
