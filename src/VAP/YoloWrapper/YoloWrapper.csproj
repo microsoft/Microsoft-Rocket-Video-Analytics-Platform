@@ -5,6 +5,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NvidiaToolkit>$(ProgramW6432)\NVIDIA GPU Computing Toolkit\CUDA\v8.0\</NvidiaToolkit>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="$(SystemDrawingCommonVersion)" />
   </ItemGroup>
@@ -33,6 +37,22 @@
     <ContentWithTargetPath Include="Dependencies\pthreadVC2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>x64\pthreadVC2.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="$(NvidiaToolkit)bin\cublas64_80.dll" Condition="Exists('$(NvidiaToolkit)bin\cublas64_80.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>x64\cublas64_80.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="$(NvidiaToolkit)bin\curand64_80.dll" Condition="Exists('$(NvidiaToolkit)bin\curand64_80.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>x64\curand64_80.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="$(NvidiaToolkit)bin\cudart64_80.dll" Condition="Exists('$(NvidiaToolkit)bin\cudart64_80.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>x64\cudart64_80.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="$(NvidiaToolkit)bin\cudnn64_7.dll" Condition="Exists('$(NvidiaToolkit)bin\cudnn64_7.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>x64\cudnn64_7.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
 
